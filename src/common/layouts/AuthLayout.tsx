@@ -12,7 +12,7 @@ const AuthLayout = ({ children }: Props) => {
   return (
     <>
       {isLoggedIn && <Navbar />}
-      <div className="flex flex-col text-center px-5 md:px-10 w-full h-dvh pt-5 md:pt-10 bg-gray-50">
+      <div className="flex flex-col text-center px-5 md:px-10 w-full md:pt-10 ">
         {children}
       </div>
     </>
