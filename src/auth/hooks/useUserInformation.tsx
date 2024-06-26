@@ -1,11 +1,12 @@
 import useStorage from "../../common/hooks/useStorage";
 
 const useUserInformation = () => {
-  const { username, token } = useStorage();
+  const { token, role, roleId } = useStorage();
 
   return {
-    username,
     token,
+    role,
+    roleId,
   };
 };
 
