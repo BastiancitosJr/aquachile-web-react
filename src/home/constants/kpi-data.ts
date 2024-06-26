@@ -11,6 +11,12 @@ export const safetyId = "safetyKpiId";
 export const incidentsId = "incidentsKpiId";
 export const monthlyProgressId = "monthlyProgressKpiId";
 
+export const productivityKPI: KPIData = {
+  id: productivityId,
+  title: "Productividad",
+  description: "Gestión del envasado v/s producción",
+};
+
 export const kpiData: KPIData[] = [
   {
     id: productivityId,
