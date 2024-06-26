@@ -17,4 +17,10 @@ export const appCustomTheme: CustomFlowbiteTheme = {
       },
     },
   },
+  spinner: {
+    color: {
+      enterprise: "fill-aqcl-500",
+      enterpriseOrange: "fill-aqclOrange-500",
+    }
+  }
 };
