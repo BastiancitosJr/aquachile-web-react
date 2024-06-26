@@ -1,49 +1,32 @@
+import { useState } from "react";
 import KPICard from "./KPICard";
-
-const modalOptions = [
-  {
-    id: "productividad-modal",
-    title: "Productividad",
-    description: "Gestión del envasado v/s producción",
-    href: "/productividad",
-  },
-  {
-    id: "auditoria-etiquetado-modal",
-    title: "Auditoría Etiquetado",
-    description: "Desviaciones en etiquetado",
-    href: "/auditoria-etiquetado",
-  },
-  {
-    id: "validar-limpieza-modal",
-    title: "Validar Limpieza",
-    description: "Limpieza en la recepción del turno",
-    href: "/limpieza",
-  },
-  {
-    id: "observaciones-seguridad-modal",
-    title: "Observaciones Seguridad",
-    description: "Conversaciones de seguridad en el equipo",
-    href: "/observaciones-seguridad",
-  },
-  {
-    id: "incidentes-turno-modal",
-    title: "Incidentes del Turno",
-    description: "Accidentes ocurrídos en el turno",
-    href: "/incidentes-turno",
-  },
-  {
-    id: "avance-mensual-modal",
-    title: "Avance Mensual",
-    description: "Producción esperada del mes",
-    href: "/avance-mensual",
-  },
-];
+import { kpiData } from "../constants/kpi-data";
+import FormsManager from "./FormsManager";
 
 const HomeOptions = () => {
+  const [currentKPIModal, setCurrentKPIModal] = useState<string | undefined>(
+    undefined
+  );
+
+  const onCardClick = (id: string) => {
+    setCurrentKPIModal(id);
+  };
+
+  const onModalClose = () => {
+    setCurrentKPIModal(undefined);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      {modalOptions.map(({ id, title, description, href }) => (
-        <KPICard key={id} title={title} description={description} href={href} />
+      <FormsManager formId={currentKPIModal} onModalClose={onModalClose} />
+      {kpiData.map(({ id, title, description }) => (
+        <KPICard
+          key={id}
+          id={id}
+          title={title}
+          description={description}
+          onClick={onCardClick}
+        />
       ))}
     </div>
   );

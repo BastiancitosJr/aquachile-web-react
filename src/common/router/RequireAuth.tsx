@@ -6,7 +6,7 @@ interface Props {
 }
 const RequireAuth = ({ roles }: Props) => {
   const location = useLocation();
-  const token = "";
+  const token = "1";
   const role = 3;
 
   if (!token) {

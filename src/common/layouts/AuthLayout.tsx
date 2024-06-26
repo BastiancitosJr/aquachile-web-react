@@ -6,7 +6,7 @@ interface Props {
 }
 
 const AuthLayout = ({ children }: Props) => {
-  const token = "";
+  const token = "1";
   const isLoggedIn = token ? true : false;
 
   return (
