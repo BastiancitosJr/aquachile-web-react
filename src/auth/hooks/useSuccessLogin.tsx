@@ -2,16 +2,15 @@ import { JWTPayload } from "../../api/constants/jwt-payload";
 import useStorage from "../../common/hooks/useStorage";
 import { jwtDecode } from "jwt-decode";
 
-const useTokenStore = () => {
-  const { setToken, setUsername } = useStorage();
+const useSuccessLogin = () => {
+  const { setAuthentication } = useStorage();
 
   const setTokenState = (newToken: string) => {
-    const { name } = jwtDecode<JWTPayload>(newToken);
-    setToken(newToken);
-    setUsername(name);
+    const { role, role_id } = jwtDecode<JWTPayload>(newToken);
+    setAuthentication(newToken, role, role_id);
   };
 
   return { setToken: setTokenState };
 };
 
-export default useTokenStore;
+export default useSuccessLogin;

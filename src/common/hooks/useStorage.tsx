@@ -3,32 +3,36 @@ import { persist } from "zustand/middleware";
 
 interface StorageState {
   token?: string;
-  username?: string;
-  setToken: (newToken: string) => void;
-  setUsername: (newUsername: string) => void;
-  removeToken: () => void;
+  role?: string;
+  roleId?: string;
+  setAuthentication: (
+    newToken: string,
+    newRole: string,
+    newRoleId: string
+  ) => void;
+  removeAuthentication: () => void;
 }
 
 const defaultState = {
   token: undefined,
-  role: -1,
-  username: "Desconocid@",
-  workerRuts: [],
+  role: undefined,
+  roleId: undefined,
 };
 
 const useStorage = create<StorageState>()(
   persist(
     (set) => ({
       ...defaultState,
-      setToken: (newToken: string) => set({ token: newToken }),
-      setUsername: (newUsername: string) => set({ username: newUsername }),
-      removeToken: () => set({ token: undefined }),
+      setAuthentication: (newToken, newRole, newRoleId) =>
+        set({ token: newToken, role: newRole, roleId: newRoleId }),
+      removeAuthentication: () => set(defaultState),
     }),
     {
-      name: "storage",
+      name: "aquachile-storage",
       partialize: (state) => ({
         token: state.token,
-        username: state.username,
+        role: state.role,
+        roleId: state.roleId,
       }),
     }
   )

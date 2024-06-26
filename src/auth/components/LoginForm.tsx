@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { ShowPasswordButton } from "../../common/components/ShowPasswordButton";
 import { Button, Label, TextInput } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
-import useLogin from "../hooks/useLogin";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useLoginRequest from "../hooks/useLoginRequest";
+import useSuccessLogin from "../hooks/useSuccessLogin";
 
 type LoginInputs = {
   username: string;
@@ -22,14 +21,15 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginInputs>();
   const sendLogin = useLoginRequest();
+  const { setToken } = useSuccessLogin();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     setIsProcessing(true);
     setIsAuthError(false);
 
     try {
-      const response = await sendLogin(data);
-      console.log(response);
+      const { accessToken } = await sendLogin(data);
+      setToken(accessToken);
     } catch (err) {
       setIsAuthError(true);
     } finally {
