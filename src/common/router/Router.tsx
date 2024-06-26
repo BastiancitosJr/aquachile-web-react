@@ -3,12 +3,13 @@ import Root from "./Root";
 import RequireAuth from "./RequireAuth";
 import { homePath, loginPath } from "./routes-paths";
 import { authRolesArray } from "../../api/constants/roles";
+import NotFoundPage from "../pages/NotFoundPage";
 
 const Router = createBrowserRouter([
   {
     path: homePath,
     element: <Root />,
-    errorElement: <div>Temp Not Found</div>,
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: loginPath,
