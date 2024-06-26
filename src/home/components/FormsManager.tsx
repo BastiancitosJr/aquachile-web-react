@@ -1,3 +1,4 @@
+import AddShiftAuditModal from "../../KPIs/components/AddShiftAuditModal";
 import AddShiftProductivityModal from "../../KPIs/components/AddShiftProductivityModal";
 import { getKPIsShowState } from "../utils/get-kpis-show-state";
 
@@ -16,6 +17,7 @@ const FormsManager = ({ formId, onModalClose }: Props) => {
         show={productivity}
         onModalClose={onModalClose}
       />
+      <AddShiftAuditModal show={audit} onModalClose={onModalClose} />
     </>
   );
 };

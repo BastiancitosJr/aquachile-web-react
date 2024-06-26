@@ -17,17 +17,15 @@ export const productivityKPI: KPIData = {
   description: "Gestión del envasado v/s producción",
 };
 
+export const auditKPI: KPIData = {
+  id: auditId,
+  title: "Auditoría Etiquetado",
+  description: "Desviaciones en etiquetado",
+};
+
 export const kpiData: KPIData[] = [
-  {
-    id: productivityId,
-    title: "Productividad",
-    description: "Gestión del envasado v/s producción",
-  },
-  {
-    id: auditId,
-    title: "Auditoría Etiquetado",
-    description: "Desviaciones en etiquetado",
-  },
+  productivityKPI,
+  auditKPI,
   {
     id: cleaningId,
     title: "Validar Limpieza",
