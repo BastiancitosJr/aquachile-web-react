@@ -1,15 +1,23 @@
-import { LoginButton } from "./LoginButton";
 import { useState } from "react";
 import { ShowPasswordButton } from "../../common/components/ShowPasswordButton";
+import { Button } from "flowbite-react";
 
 export function LoginForm() {
   const credentialsPlaceholder = "Credenciales";
   const passwordPlaceholder = "Contraseña";
-
   const [showPassword, setShowPassword] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleLogin = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    setIsProcessing(true);
+    setTimeout(() => {
+      setIsProcessing(false);
+    }, 2000);
+  };
 
   return (
-    <form>
+    <form onSubmit={handleLogin}>
       <div className="relative z-0 w-full mb-10 group">
         <input
           type="text"
@@ -50,7 +58,16 @@ export function LoginForm() {
         </button>
       </div>
       <div className="flex items-center justify-center py-5">
-        <LoginButton />
+        {/* <LoginButton /> */}
+        <Button
+          type="submit"
+          size="lg"
+          isProcessing={isProcessing}
+          className="login-button"
+          pill
+        >
+          Iniciar sesión
+        </Button>
       </div>
     </form>
   );

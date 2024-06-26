@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .login-button {
+    @apply w-full bg-primary-200 text-white font-medium  rounded-lg flex items-center justify-center hover:bg-primary-300 !important;
+  }
+}
