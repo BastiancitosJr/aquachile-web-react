@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn-loggin {
+    @apply w-full mt-5 bg-aqclOrange-500 hover:bg-aqclOrange-600 rounded-lg !important;
+  }
+}

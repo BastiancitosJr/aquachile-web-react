@@ -2,9 +2,6 @@ import { useState } from "react";
 import { ShowPasswordButton } from "../../common/components/ShowPasswordButton";
 import { Button, Label, TextInput } from "flowbite-react";
 
-const credentialsPlaceholder = "Credenciales";
-const passwordPlaceholder = "Contraseña";
-
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -36,13 +33,25 @@ const LoginForm = () => {
       <div className="block w-full text-start mt-2 mb-1">
         <Label htmlFor="password-input" value="Tu Identificador" />
       </div>
-      <TextInput
-        className="w-full"
-        color="enterprise"
-        id="password-input"
-        type="password"
-        placeholder="******"
-      />
+      <div className="relative z-0 w-full mb-10 group">
+        <div className="inline-flex w-full">
+          <TextInput
+            className="w-full"
+            color="enterprise"
+            id="password-input"
+            type={showPassword ? "text" : "password"}
+            placeholder="******"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute inset-y-0 right-0 flex items-center pr-3"
+          >
+            <ShowPasswordButton showPassword={showPassword} />
+          </button>
+        </div>
+      </div>
+
       {/* <input
         type="text"
         name="username"
@@ -79,7 +88,7 @@ const LoginForm = () => {
         <ShowPasswordButton showPassword={showPassword} />
       </button> */}
       <Button
-        className="w-full mt-5"
+        className="btn-loggin"
         type="submit"
         size="lg"
         color="enterprise"
