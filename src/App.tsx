@@ -1,3 +1,5 @@
+import LoginPage from "./auth/pages/LoginPage";
+
 export default function App() {
-  return <h1>Hello World!</h1>;
+  return LoginPage();
 }
