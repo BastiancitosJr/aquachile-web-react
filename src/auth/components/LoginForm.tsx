@@ -26,6 +26,7 @@ export function LoginForm() {
       </div>
       <TextInput
         className="w-full"
+        color="enterprise"
         id="username-input"
         type="text"
         placeholder="Ej: Linea-1 o 12.123.123-K"
@@ -36,6 +37,7 @@ export function LoginForm() {
       </div>
       <TextInput
         className="w-full"
+        color="enterprise"
         id="password-input"
         type="password"
         placeholder="******"
