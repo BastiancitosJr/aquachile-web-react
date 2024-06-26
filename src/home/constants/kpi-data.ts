@@ -29,15 +29,17 @@ export const cleaningKPI: KPIData = {
   description: "Limpieza en la recepción del turno",
 };
 
+export const safetyKPI: KPIData = {
+  id: safetyId,
+  title: "Observaciones Seguridad",
+  description: "Conversaciones de seguridad en el equipo",
+};
+
 export const kpiData: KPIData[] = [
   productivityKPI,
   auditKPI,
   cleaningKPI,
-  {
-    id: safetyId,
-    title: "Observaciones Seguridad",
-    description: "Conversaciones de seguridad en el equipo",
-  },
+  safetyKPI,
   {
     id: incidentsId,
     title: "Incidentes del Turno",
