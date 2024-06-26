@@ -1,3 +1,5 @@
+import { Button } from "flowbite-react";
+
 const NotFoundPage = () => {
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -19,6 +21,7 @@ const NotFoundPage = () => {
           >
             Volver al Inicio
           </a>
+          <Button color="enterprise">Hola</Button>
         </div>
       </div>
     </section>
