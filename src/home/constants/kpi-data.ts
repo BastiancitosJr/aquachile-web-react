@@ -23,14 +23,16 @@ export const auditKPI: KPIData = {
   description: "Desviaciones en etiquetado",
 };
 
+export const cleaningKPI: KPIData = {
+  id: cleaningId,
+  title: "Validar Limpieza",
+  description: "Limpieza en la recepción del turno",
+};
+
 export const kpiData: KPIData[] = [
   productivityKPI,
   auditKPI,
-  {
-    id: cleaningId,
-    title: "Validar Limpieza",
-    description: "Limpieza en la recepción del turno",
-  },
+  cleaningKPI,
   {
     id: safetyId,
     title: "Observaciones Seguridad",
