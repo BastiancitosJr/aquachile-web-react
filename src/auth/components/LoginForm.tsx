@@ -1,11 +1,10 @@
 import { useState } from "react";
-import agent from "../../api/agent";
 import { ShowPasswordButton } from "../../common/components/ShowPasswordButton";
 import { Button, Label, TextInput } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import { SubmitHandler, useForm } from "react-hook-form";
-
+import useLoginRequest from "../hooks/useLoginRequest";
 const LoginForm = () => {
   type LoginInputs = {
     username: string;
@@ -13,37 +12,32 @@ const LoginForm = () => {
   };
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isUnAuth, setIsUnAuth] = useState(false);
+  const [isAuthError, setIsAuthError] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginInputs>();
+  const sendLogin = useLoginRequest();
 
-  const navigate = useNavigate();
-  const { setToken } = useLogin();
-
-  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
-    const loginData = {
-      username: data.username,
-      password: data.password,
-    };
+  const onSubmit: SubmitHandler<LoginInputs> = async ({
+    username,
+    password,
+  }) => {
     setIsProcessing(true);
-    agent.Auth.login(loginData)
-      .then((response) => {
-        const { access } = response;
-        setToken(access);
-        console.log(response);
-        navigate("/dashboard");
-      })
-      .catch((error) => {
-        console.error("Error de autenticación:", error);
-        setIsUnAuth(true);
-      })
-      .finally(() => {
-        setIsProcessing(false);
-      });
+    setIsAuthError(false);
+    const loginData = {
+      username,
+      password,
+    };
+    try {
+      const response = await sendLogin(loginData);
+    } catch (err) {
+      setIsAuthError(true);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -100,7 +94,7 @@ const LoginForm = () => {
         </div>
       </div>
 
-      {isUnAuth && (
+      {isAuthError && (
         <div className="text-red-500 mt-2">Credenciales inválidas</div>
       )}
       <Button
