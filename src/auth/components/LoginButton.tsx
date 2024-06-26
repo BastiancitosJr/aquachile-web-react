@@ -2,6 +2,6 @@ export function LoginButton() {
     return (
         <button 
         type="submit" 
-        className="w-full py-2.5 px-5 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-0 focus:border-blue-700">Iniciar Sesión</button>
+        className="w-full bg-primary-200 text-white font-medium py-2 px-4 rounded flex items-center justify-center hover:bg-primary-300">Iniciar Sesión</button>
     );
 }
