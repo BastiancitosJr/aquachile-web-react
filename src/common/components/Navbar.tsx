@@ -2,6 +2,8 @@ import { Avatar, Dropdown, Navbar as FlowbiteNavbar } from "flowbite-react";
 import aquaChileLogoDark from "../../assets/img/aquachile-logo-dark.webp";
 import aquaChileLogoOrange from "../../assets/img/aquachile-logo-orange.webp";
 import { homePath } from "../router/routes-paths";
+import useUserInformation from "../../auth/hooks/useUserInformation";
+import useLogout from "../../auth/hooks/useLogout";
 
 const navbarOptions = [
   {
@@ -25,6 +27,13 @@ const userInformation = {
 const signOutText = "Cerrar Sesión";
 
 const Navbar = () => {
+  const { role: roleName } = useUserInformation();
+  const logout = useLogout();
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <FlowbiteNavbar fluid className="bg-aqcl-500">
       <FlowbiteNavbar.Brand href={mainLogo.href}>
@@ -44,11 +53,9 @@ const Navbar = () => {
           }
         >
           <Dropdown.Header>
-            <span className="font-bold uppercase text-wrap">
-              {userInformation.name}
-            </span>
+            <span className="font-bold uppercase text-wrap">{roleName}</span>
           </Dropdown.Header>
-          <Dropdown.Item>{signOutText}</Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>{signOutText}</Dropdown.Item>
         </Dropdown>
         <FlowbiteNavbar.Toggle />
       </div>
