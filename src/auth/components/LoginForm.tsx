@@ -6,12 +6,11 @@ import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-type LoginInputs = {
-  username: string;
-  password: string;
-};
-
 const LoginForm = () => {
+  type LoginInputs = {
+    username: string;
+    password: string;
+  };
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isUnAuth, setIsUnAuth] = useState(false);
@@ -26,16 +25,20 @@ const LoginForm = () => {
   const { setToken } = useLogin();
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
-    const { username: username, password: password } = data;
+    const loginData = {
+      username: data.username,
+      password: data.password,
+    };
     setIsProcessing(true);
-    agent.Auth.login({ username, password })
+    agent.Auth.login(loginData)
       .then((response) => {
         const { access } = response;
         setToken(access);
+        console.log(response);
         navigate("/dashboard");
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error de autenticación:", error);
         setIsUnAuth(true);
       })
       .finally(() => {

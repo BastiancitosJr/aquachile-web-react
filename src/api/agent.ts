@@ -9,7 +9,10 @@ axios.interceptors.request.use((config) => {
   const tokenStrJson = localStorage.getItem("token") ?? "";
   const tokenObj = JSON.parse(tokenStrJson);
   const token = tokenObj?.state?.token as string;
-  config.headers.Autorization = `Bearer ${token}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
   return config;
 });
 
@@ -20,6 +23,7 @@ const requests = {
     axios.get(url, { params }).then(responseBody),
   post: (url: string, body: unknown) =>
     axios.post(url, body).then(responseBody),
+
   put: (url: string, body: unknown) => axios.put(url, body).then(responseBody),
   delete: (url: string) => axios.delete(url).then(responseBody),
   patch: (url: string, body: unknown) =>
@@ -27,7 +31,10 @@ const requests = {
 };
 
 const Auth = {
-  login: (form: AuthDto) => requests.post("api/auth/login", form),
+  login: (form: AuthDto) => {
+    console.log("form", form);
+    return requests.post("api/login", form);
+  },
 };
 
 const agent = { Auth };
