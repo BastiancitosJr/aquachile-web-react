@@ -1,21 +1,12 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import axios, { AxiosResponse } from "axios";
 import { apiUrl } from "../config/envs";
-import { AuthDto } from "../../auth/dtos/auth-dto";
+import useUserInformation from "../../auth/hooks/useUserInformation";
 
 axios.defaults.baseURL = apiUrl;
 
 const useAxios = () => {
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const tokenStrJson = localStorage.getItem("token") ?? "";
-    const tokenObj = JSON.parse(tokenStrJson);
-    const token = tokenObj?.state?.token as string;
-    if (token) {
-      setToken(token);
-    }
-  }, []);
+  const { token } = useUserInformation();
 
   useEffect(() => {
     const requestInterceptor = axios.interceptors.request.use((config) => {
@@ -61,12 +52,4 @@ const useAxios = () => {
   return { get, post, put, del, patch };
 };
 
-const useAuth = () => {
-  const { post } = useAxios();
-
-  const login = (form: AuthDto) => post("auth/login", form);
-
-  return { login };
-};
-
-export { useAxios, useAuth };
+export default useAxios;
