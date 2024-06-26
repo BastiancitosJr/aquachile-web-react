@@ -5,7 +5,7 @@ import { Button, Label, TextInput } from "flowbite-react";
 const credentialsPlaceholder = "Credenciales";
 const passwordPlaceholder = "Contraseña";
 
-export function LoginForm() {
+const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -89,4 +89,6 @@ export function LoginForm() {
       </Button>
     </form>
   );
-}
+};
+
+export default LoginForm;

@@ -1,5 +1,5 @@
-import { LoginForm } from "../components/LoginForm";
 import logo from "../../assets/img/aquachile-logo.webp";
+import LoginForm from "../components/LoginForm";
 
 const LoginPage = () => {
   return (
