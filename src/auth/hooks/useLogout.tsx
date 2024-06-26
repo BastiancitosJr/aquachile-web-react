@@ -1,16 +1,17 @@
 import useStorage from "../../common/hooks/useStorage";
+import { useNavigate } from "react-router-dom";
+import { loginPath } from "../../common/router/routes-paths";
 
 const useLogout = () => {
-  const { setToken, setUsername } = useStorage();
+  const { removeAuthentication } = useStorage();
+  const navigate = useNavigate();
 
   const logout = () => {
-    setToken("");
-    setUsername("Default");
+    removeAuthentication();
+    navigate(loginPath);
   };
 
-  return {
-    logout,
-  };
+  return logout;
 };
 
 export default useLogout;
