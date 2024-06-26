@@ -1,19 +1,34 @@
-"use client";
-
 import { Avatar, Dropdown, Navbar as FlowbiteNavbar } from "flowbite-react";
+import aquaChileLogoDark from "../../assets/img/aquachile-logo-dark.webp";
+import aquaChileLogoOrange from "../../assets/img/aquachile-logo-orange.webp";
+import { homePath } from "../router/routes-paths";
+
+const navbarOptions = [
+  {
+    path: homePath,
+    title: "Home",
+  },
+];
+
+const mainLogo = {
+  img: aquaChileLogoDark,
+  imgAlt: "Aquachile Logo",
+  href: homePath,
+};
+
+const userInformation = {
+  name: "Linea 1",
+  img: aquaChileLogoOrange,
+  imgAlt: "Aquachile Logo",
+};
+
+const signOutText = "Cerrar Sesión";
 
 const Navbar = () => {
   return (
-    <FlowbiteNavbar fluid rounded>
-      <FlowbiteNavbar.Brand href="https://flowbite-react.com">
-        <img
-          src="/favicon.svg"
-          className="mr-3 h-6 sm:h-9"
-          alt="Flowbite React Logo"
-        />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-          Flowbite React
-        </span>
+    <FlowbiteNavbar fluid className="bg-aqcl-500">
+      <FlowbiteNavbar.Brand href={mainLogo.href}>
+        <img src={mainLogo.img} className="w-28 py-1" alt={mainLogo.imgAlt} />
       </FlowbiteNavbar.Brand>
       <div className="flex md:order-2">
         <Dropdown
@@ -21,34 +36,32 @@ const Navbar = () => {
           inline
           label={
             <Avatar
-              alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+              className="border-2 p-0.5 border-aqclOrange-700 rounded-full"
+              alt={userInformation.imgAlt}
+              img={userInformation.img}
               rounded
             />
           }
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
-            <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+            <span className="font-bold uppercase text-wrap">
+              {userInformation.name}
             </span>
           </Dropdown.Header>
-          <Dropdown.Item>Dashboard</Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Item>Earnings</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item>{signOutText}</Dropdown.Item>
         </Dropdown>
         <FlowbiteNavbar.Toggle />
       </div>
       <FlowbiteNavbar.Collapse>
-        <FlowbiteNavbar.Link href="#" active>
-          Home
-        </FlowbiteNavbar.Link>
-        <FlowbiteNavbar.Link href="#">About</FlowbiteNavbar.Link>
-        <FlowbiteNavbar.Link href="#">Services</FlowbiteNavbar.Link>
-        <FlowbiteNavbar.Link href="#">Pricing</FlowbiteNavbar.Link>
-        <FlowbiteNavbar.Link href="#">Contact</FlowbiteNavbar.Link>
+        {navbarOptions.map(({ path, title }) => (
+          <FlowbiteNavbar.Link
+            key={path + title}
+            href={path}
+            className="text-lg text-white"
+          >
+            {title}
+          </FlowbiteNavbar.Link>
+        ))}
       </FlowbiteNavbar.Collapse>
     </FlowbiteNavbar>
   );
