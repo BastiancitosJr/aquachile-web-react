@@ -44,13 +44,19 @@ const AddShiftProductivityModal = ({ show, onModalClose }: Props) => {
               ref={emailInputRef}
               placeholder="Ej: 250"
               type="number"
+              color="enterprise"
             />
           </div>
           <div>
             <div className="mb-2 block">
               <Label htmlFor="tons-packaged" value="Toneladas Envasadas" />
             </div>
-            <TextInput id="tons-packaged" placeholder="Ej: 220" type="number" />
+            <TextInput
+              id="tons-packaged"
+              placeholder="Ej: 220"
+              type="number"
+              color="enterprise"
+            />
           </div>
           <Button className="w-full" type="submit" color="enterprise">
             {formTexts.button}
