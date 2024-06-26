@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 import "../../index.css";
-import AuthLayout from "../layouts/AuthLayout";
+import MainLayout from "../layouts/MainLayout";
 
 const Root = () => {
-  return <AuthLayout children={<Outlet />} />;
+  return <MainLayout children={<Outlet />} />;
 };
 
 export default Root;

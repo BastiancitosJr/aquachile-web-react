@@ -72,7 +72,7 @@ const LoginForm = () => {
       <div className="block w-full text-start mt-2 mb-1">
         <Label htmlFor="password-input" value="Tu Identificador" />
       </div>
-      <div className="relative z-0 w-full mb-10 group">
+      <div className="relative z-0 w-full group">
         <div className="inline-flex w-full">
           <TextInput
             className="w-full"
@@ -101,7 +101,7 @@ const LoginForm = () => {
       </div>
 
       {isUnAuth && (
-        <div className="text-red-500 mb-4">Credenciales inválidas</div>
+        <div className="text-red-500 mt-2">Credenciales inválidas</div>
       )}
       <Button
         className="btn-loggin"
