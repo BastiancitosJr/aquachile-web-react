@@ -6,7 +6,7 @@ import { homePath } from "../router/routes-paths";
 const navbarOptions = [
   {
     path: homePath,
-    title: "Home",
+    title: "Inicio",
   },
 ];
 
@@ -57,7 +57,7 @@ const Navbar = () => {
           <FlowbiteNavbar.Link
             key={path + title}
             href={path}
-            className="text-lg text-white"
+            className="text-lg text-white hover:!text-aqclOrange-600 uppercase"
           >
             {title}
           </FlowbiteNavbar.Link>
