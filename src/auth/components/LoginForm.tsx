@@ -2,9 +2,10 @@ import { useState } from "react";
 import { ShowPasswordButton } from "../../common/components/ShowPasswordButton";
 import { Button, Label, TextInput } from "flowbite-react";
 
+const credentialsPlaceholder = "Credenciales";
+const passwordPlaceholder = "Contraseña";
+
 export function LoginForm() {
-  const credentialsPlaceholder = "Credenciales";
-  const passwordPlaceholder = "Contraseña";
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
