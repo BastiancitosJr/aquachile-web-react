@@ -1,17 +1,26 @@
 import { useState } from "react";
+import agent from "../../api/agent";
 import { ShowPasswordButton } from "../../common/components/ShowPasswordButton";
 import { Button, Label, TextInput } from "flowbite-react";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleLogin = (event: { preventDefault: () => void }) => {
+  const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     setIsProcessing(true);
-    setTimeout(() => {
+
+    try {
+      const response = await agent.Auth.login({ username, password });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
       setIsProcessing(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -28,6 +37,7 @@ const LoginForm = () => {
         id="username-input"
         type="text"
         placeholder="Ej: Linea-1 o 12.123.123-K"
+        onChange={(event) => setUsername(event.target.value)}
       />
 
       <div className="block w-full text-start mt-2 mb-1">
@@ -41,6 +51,7 @@ const LoginForm = () => {
             id="password-input"
             type={showPassword ? "text" : "password"}
             placeholder="******"
+            onChange={(event) => setPassword(event.target.value)}
           />
           <button
             type="button"
