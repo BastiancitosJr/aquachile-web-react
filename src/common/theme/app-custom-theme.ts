@@ -21,6 +21,17 @@ export const appCustomTheme: CustomFlowbiteTheme = {
     color: {
       enterprise: "fill-aqcl-500",
       enterpriseOrange: "fill-aqclOrange-500",
-    }
-  }
+    },
+  },
+  radio: {
+    root: {
+      base: "h-4 w-4 border border-gray-300 text-aqclOrange-600 focus:ring-2 focus:ring-aqclOrange-500 dark:border-gray-600 dark:bg-gray-700 dark:focus:bg-aqclOrange-600 dark:focus:ring-aqclOrange-600",
+    },
+  },
+  textarea: {
+    colors: {
+      enterprise:
+        "border-aqcl-500 bg-aqcl-50 text-aqcl-900 placeholder-aqcl-700 focus:border-aqcl-500 focus:ring-aqcl-500 dark:border-aqcl-400 dark:bg-aqcl-100 dark:focus:border-aqcl-500 dark:focus:ring-aqcl-500",
+    },
+  },
 };

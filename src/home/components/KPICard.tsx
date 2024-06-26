@@ -1,15 +1,22 @@
 import { Card } from "flowbite-react";
 
 interface Props {
+  id: string;
   title: string;
   description: string;
-  href: string;
+  onClick?: (id: string) => void;
   className?: string;
 }
 
-const KPICard = ({ title, description, href, className }: Props) => {
+const KPICard = ({ id, title, description, onClick, className }: Props) => {
+  const handleClick = () => {
+    if (onClick) {
+      onClick(id);
+    }
+  };
+
   return (
-    <Card href={href} className={`${className}`}>
+    <Card className={`${className}`} onClick={handleClick}>
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         {title}
       </h5>
