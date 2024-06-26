@@ -1,5 +1,6 @@
 import { Button, Label, Modal, Radio, Textarea } from "flowbite-react";
 import { auditKPI } from "../../home/constants/kpi-data";
+import Divider from "../../common/components/Divider";
 
 const formTexts = {
   title: auditKPI.title,
@@ -28,7 +29,8 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
           <h3 className="text-3xl text-center font-medium uppercase">
             {formTexts.title}
           </h3>
-          <form className="mt-10">
+          <Divider className="my-5" />
+          <form className="">
             <h3 className="text-2xl mb-1">{formTexts.subtitle}</h3>
             <fieldset className="w-full flex justify-between px-16 mt-5">
               <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
