@@ -4,6 +4,8 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useLoginRequest from "../hooks/useLoginRequest";
 import useSuccessLogin from "../hooks/useSuccessLogin";
+import { useNavigate } from "react-router-dom";
+import { homePath } from "../../common/router/routes-paths";
 
 type LoginInputs = {
   username: string;
@@ -22,6 +24,7 @@ const LoginForm = () => {
   } = useForm<LoginInputs>();
   const sendLogin = useLoginRequest();
   const { setToken } = useSuccessLogin();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     setIsProcessing(true);
@@ -30,6 +33,7 @@ const LoginForm = () => {
     try {
       const { accessToken } = await sendLogin(data);
       setToken(accessToken);
+      navigate(homePath);
     } catch (err) {
       setIsAuthError(true);
     } finally {

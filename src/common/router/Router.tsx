@@ -6,6 +6,7 @@ import { authRolesArray } from "../../api/constants/roles";
 import NotFoundPage from "../pages/NotFoundPage";
 import HomePage from "../../home/pages/HomePage";
 import LoginPage from "../../auth/pages/LoginPage";
+import RequireGuest from "./RequireGuest";
 
 const Router = createBrowserRouter([
   {
@@ -14,8 +15,13 @@ const Router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: loginPath,
-        element: <LoginPage />,
+        element: <RequireGuest />,
+        children: [
+          {
+            path: loginPath,
+            element: <LoginPage />,
+          },
+        ],
       },
       {
         element: <RequireAuth roles={authRolesArray} />,

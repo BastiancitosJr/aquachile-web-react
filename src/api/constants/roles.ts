@@ -1,8 +1,8 @@
-export const ADMIN = 1;
-export const ADMINISTRATIVE = 2;
-export const SHIFT_MANAGER = 3;
-export const OPERATOR = 4;
-export const LINE = 5;
+export const ADMIN = "1";
+export const ADMINISTRATIVE = "2";
+export const SHIFT_MANAGER = "3";
+export const OPERATOR = "4";
+export const LINE = "5";
 
 export const authRolesArray = [
   ADMIN,
