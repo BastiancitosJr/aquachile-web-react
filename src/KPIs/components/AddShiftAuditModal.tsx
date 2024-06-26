@@ -1,12 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Label,
-  Modal,
-  Radio,
-  Textarea,
-  TextInput,
-} from "flowbite-react";
+import { Button, Label, Modal, Radio, Textarea } from "flowbite-react";
 import { auditKPI } from "../../home/constants/kpi-data";
 
 const formTexts = {
