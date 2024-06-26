@@ -4,6 +4,7 @@ import RequireAuth from "./RequireAuth";
 import { homePath, loginPath } from "./routes-paths";
 import { authRolesArray } from "../../api/constants/roles";
 import NotFoundPage from "../pages/NotFoundPage";
+import HomePage from "../../home/pages/HomePage";
 
 const Router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ const Router = createBrowserRouter([
         children: [
           {
             path: homePath,
-            element: <div>Home View</div>,
+            element: <HomePage />,
           },
         ],
       },
