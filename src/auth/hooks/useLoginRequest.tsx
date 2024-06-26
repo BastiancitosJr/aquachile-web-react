@@ -1,10 +1,10 @@
 import useAxios from "../../api/hooks/useAxios";
-import { AuthDto } from "../dtos/auth-dto";
+import { LoginRequestDto } from "../dtos/login-request-dto";
 
 const useLoginRequest = () => {
   const { post } = useAxios();
 
-  const loginRequest = (form: AuthDto) => post("auth/login", form);
+  const loginRequest = (form: LoginRequestDto) => post("auth/login", form);
 
   return loginRequest;
 };

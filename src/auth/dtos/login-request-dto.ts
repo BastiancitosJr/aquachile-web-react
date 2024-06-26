@@ -1,4 +1,5 @@
-export interface AuthDto {
+export interface LoginRequestDto {
   username: string;
+
   password: string;
 }

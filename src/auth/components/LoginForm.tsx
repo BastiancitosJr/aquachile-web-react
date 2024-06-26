@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useLoginRequest from "../hooks/useLoginRequest";
+
 const LoginForm = () => {
   type LoginInputs = {
     username: string;
@@ -33,6 +34,7 @@ const LoginForm = () => {
     };
     try {
       const response = await sendLogin(loginData);
+      console.log(response);
     } catch (err) {
       setIsAuthError(true);
     } finally {
