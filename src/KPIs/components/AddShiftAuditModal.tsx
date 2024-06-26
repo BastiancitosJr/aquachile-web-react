@@ -25,15 +25,13 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
       <Modal.Header />
       <Modal.Body>
         <div>
-          <h3 className="text-3xl text-center font-medium text-gray-900 uppercase">
+          <h3 className="text-3xl text-center font-medium uppercase">
             {formTexts.title}
           </h3>
           <form className="mt-10">
-            <h3 className="text-2xl font-medium text-gray-900 mb-1">
-              {formTexts.subtitle}
-            </h3>
+            <h3 className="text-2xl mb-1">{formTexts.subtitle}</h3>
             <fieldset className="w-full flex justify-between px-16 mt-5">
-              <legend className="text-center my-5 text-xl text-aqclOrange-500 font-bold">
+              <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
                 {formTexts.isAuditOk}
               </legend>
               <div className="flex items-center gap-2">
