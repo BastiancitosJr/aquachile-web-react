@@ -2,11 +2,11 @@ const flowbite = require("flowbite-react/tailwind");
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}", flowbite.content()],
   theme: {
     extend: {
       colors: {
-        aqCl: {
+        aqcl: {
           100: "#d1e3eb",
           200: "#a6c8d8",
           300: "#7baccc",
