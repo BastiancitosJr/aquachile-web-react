@@ -1,4 +1,4 @@
-import AddShiftProductivityModal from "../../productivity/components/AddShiftProductivityModal";
+import AddShiftProductivityModal from "../../KPIs/components/AddShiftProductivityModal";
 import { getKPIsShowState } from "../utils/get-kpis-show-state";
 
 interface Props {
