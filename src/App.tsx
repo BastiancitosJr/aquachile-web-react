@@ -1,10 +1,3 @@
-import { Button } from "flowbite-react";
-
 export default function App() {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <Button>Click me</Button>
-    </div>
-  );
+  return <h1>Hello World!</h1>;
 }
