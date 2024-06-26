@@ -6,11 +6,12 @@ import useLogin from "../hooks/useLogin";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useLoginRequest from "../hooks/useLoginRequest";
 
+type LoginInputs = {
+  username: string;
+  password: string;
+};
+
 const LoginForm = () => {
-  type LoginInputs = {
-    username: string;
-    password: string;
-  };
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isAuthError, setIsAuthError] = useState(false);
@@ -22,18 +23,12 @@ const LoginForm = () => {
   } = useForm<LoginInputs>();
   const sendLogin = useLoginRequest();
 
-  const onSubmit: SubmitHandler<LoginInputs> = async ({
-    username,
-    password,
-  }) => {
+  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     setIsProcessing(true);
     setIsAuthError(false);
-    const loginData = {
-      username,
-      password,
-    };
+
     try {
-      const response = await sendLogin(loginData);
+      const response = await sendLogin(data);
       console.log(response);
     } catch (err) {
       setIsAuthError(true);
