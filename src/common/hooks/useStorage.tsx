@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface StorageState {
-  token?: string;
-  role?: string;
-  roleId?: string;
+  token: string;
+  role: string;
+  roleId: string;
   setAuthentication: (
     newToken: string,
     newRole: string,
@@ -14,9 +14,9 @@ interface StorageState {
 }
 
 const defaultState = {
-  token: undefined,
-  role: undefined,
-  roleId: undefined,
+  token: "",
+  role: "",
+  roleId: "",
 };
 
 const useStorage = create<StorageState>()(
