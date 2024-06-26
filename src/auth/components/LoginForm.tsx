@@ -2,43 +2,69 @@ import { useState } from "react";
 import agent from "../../api/agent";
 import { ShowPasswordButton } from "../../common/components/ShowPasswordButton";
 import { Button, Label, TextInput } from "flowbite-react";
+import { useNavigate } from "react-router-dom";
+import useLogin from "../hooks/useLogin";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+type LoginInputs = {
+  username: string;
+  password: string;
+};
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [isUnAuth, setIsUnAuth] = useState(false);
 
-  const handleLogin = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInputs>();
+
+  const navigate = useNavigate();
+  const { setToken } = useLogin();
+
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+    const { username: username, password: password } = data;
     setIsProcessing(true);
-
-    try {
-      const response = await agent.Auth.login({ username, password });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsProcessing(false);
-    }
+    agent.Auth.login({ username, password })
+      .then((response) => {
+        const { access } = response;
+        setToken(access);
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsUnAuth(true);
+      })
+      .finally(() => {
+        setIsProcessing(false);
+      });
   };
 
   return (
     <form
       className="flex flex-col w-full h-full justify-start items-start mt-5"
-      onSubmit={handleLogin}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="block w-full text-start mb-1">
         <Label htmlFor="username-input" value="Tu Identificador" />
       </div>
       <TextInput
         className="w-full"
-        color="enterprise"
+        color={errors.username?.message ? "failure" : "enterprise"}
         id="username-input"
         type="text"
         placeholder="Ej: Linea-1 o 12.123.123-K"
-        onChange={(event) => setUsername(event.target.value)}
+        {...register("username", {
+          required: "Debes ingresar tu identificador",
+        })}
+        autoComplete="username"
       />
+      {errors.username && (
+        <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+      )}
 
       <div className="block w-full text-start mt-2 mb-1">
         <Label htmlFor="password-input" value="Tu Identificador" />
@@ -47,11 +73,14 @@ const LoginForm = () => {
         <div className="inline-flex w-full">
           <TextInput
             className="w-full"
-            color="enterprise"
+            color={errors.password?.message ? "failure" : "enterprise"}
             id="password-input"
             type={showPassword ? "text" : "password"}
             placeholder="******"
-            onChange={(event) => setPassword(event.target.value)}
+            {...register("password", {
+              required: "Debes ingresar tu contraseña",
+            })}
+            autoComplete="current-password"
           />
           <button
             type="button"
@@ -61,7 +90,16 @@ const LoginForm = () => {
             <ShowPasswordButton showPassword={showPassword} />
           </button>
         </div>
+        <div className="text-start pt-1">
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password.message}</p>
+          )}
+        </div>
       </div>
+
+      {isUnAuth && (
+        <div className="text-red-500 mb-4">Credenciales inválidas</div>
+      )}
       <Button
         className="btn-loggin"
         type="submit"
