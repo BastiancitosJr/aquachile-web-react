@@ -11,7 +11,8 @@ interface Props {
 }
 
 const FormsManager = ({ formId, onModalClose }: Props) => {
-  const { productivity, audit, cleaning, safety, incidents, monthlyProgress } =
+  //TODO: ELIMINE EL monthlyProgress porque no estaba siendo usado
+  const { productivity, audit, cleaning, safety, incidents } =
     getKPIsShowState(formId);
 
   return (
