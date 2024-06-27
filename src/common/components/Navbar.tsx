@@ -24,7 +24,7 @@ const userInformation = {
   imgAlt: "Aquachile Logo",
 };
 
-const signOutText = "Cerrar Sesión";
+const signOutText = "Cerrar sesión";
 
 const Navbar = () => {
   const { role: roleName } = useUserInformation();
@@ -53,9 +53,16 @@ const Navbar = () => {
           }
         >
           <Dropdown.Header>
-            <span className="font-bold uppercase text-wrap">{roleName}</span>
+            <span className="font-bold uppercase text-center text-md">
+              {roleName}
+            </span>
           </Dropdown.Header>
-          <Dropdown.Item onClick={handleLogout}>{signOutText}</Dropdown.Item>
+          <Dropdown.Item
+            onClick={handleLogout}
+            className="hover:text-red-500 text-md"
+          >
+            {signOutText}
+          </Dropdown.Item>
         </Dropdown>
         <FlowbiteNavbar.Toggle />
       </div>
