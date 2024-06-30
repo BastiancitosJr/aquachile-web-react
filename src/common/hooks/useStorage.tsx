@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface ShiftStorage {
-  shift: string;
-  setShift: (newShift: string) => void;
+  shiftId: string;
+  setShift: (newShiftId: string) => void;
 }
 
 interface AuthStorage {
@@ -24,7 +24,7 @@ const defaultState = {
   token: "",
   role: "",
   roleId: "",
-  shift: "",
+  shiftId: "",
 };
 
 const useStorage = create<StorageState>()(
@@ -34,7 +34,7 @@ const useStorage = create<StorageState>()(
       setAuthentication: (newToken, newRole, newRoleId) =>
         set({ token: newToken, role: newRole, roleId: newRoleId }),
       removeAuthentication: () => set(defaultState),
-      setShift: (newShift) => set({ shift: newShift }),
+      setShift: (newShiftId) => set({ shiftId: newShiftId }),
     }),
     {
       name: "aquachile-storage",
@@ -42,7 +42,7 @@ const useStorage = create<StorageState>()(
         token: state.token,
         role: state.role,
         roleId: state.roleId,
-        shift: state.shift,
+        shift: state.shiftId,
       }),
     }
   )
