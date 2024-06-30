@@ -42,7 +42,7 @@ const useStorage = create<StorageState>()(
         token: state.token,
         role: state.role,
         roleId: state.roleId,
-        shift: state.shiftId,
+        shiftId: state.shiftId,
       }),
     }
   )

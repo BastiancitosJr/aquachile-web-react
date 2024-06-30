@@ -24,6 +24,10 @@ export const appCustomTheme: CustomFlowbiteTheme = {
       enterprise: "fill-aqcl-500",
       enterpriseOrange: "fill-aqclOrange-500",
     },
+    size: {
+      "2xl": "w-16 h-16",
+      "3xl": "w-32 h-32",
+    },
   },
   radio: {
     root: {
