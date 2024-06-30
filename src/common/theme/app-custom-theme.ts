@@ -5,6 +5,8 @@ export const appCustomTheme: CustomFlowbiteTheme = {
     color: {
       enterprise:
         "border border-transparent bg-aqcl-500 text-white focus:ring-4 focus:ring-aqcl-400 enabled:hover:bg-aqcl-700",
+      enterpriseOrange:
+        "border border-transparent bg-aqclOrange-500 text-white focus:ring-4 focus:ring-aqclOrange-400 enabled:hover:bg-aqclOrange-600",
     },
   },
   textInput: {
