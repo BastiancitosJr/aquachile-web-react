@@ -30,12 +30,12 @@ const useAxios = () => {
   );
 
   const post = useCallback(
-    (url: string, body: Object) => axios.post(url, body).then(responseBody),
+    (url: string, body: unknown) => axios.post(url, body).then(responseBody),
     []
   );
 
   const put = useCallback(
-    (url: string, body: Object) => axios.put(url, body).then(responseBody),
+    (url: string, body: unknown) => axios.put(url, body).then(responseBody),
     []
   );
 
@@ -45,7 +45,7 @@ const useAxios = () => {
   );
 
   const patch = useCallback(
-    (url: string, body: Object) => axios.patch(url, body).then(responseBody),
+    (url: string, body: unknown) => axios.patch(url, body).then(responseBody),
     []
   );
 
