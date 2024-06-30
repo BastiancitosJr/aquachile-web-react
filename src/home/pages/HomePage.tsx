@@ -17,9 +17,6 @@ const HomePage = () => {
         console.log("Shift is open", shiftInformation);
         console.log(shiftInformation);
       }
-      if (!isShiftOpen) {
-        console.log("Shift is not open");
-      }
 
       setIsShiftOpen(isShiftOpen);
       setIsDataFetching(false);
@@ -27,6 +24,10 @@ const HomePage = () => {
 
     fetchData();
   }, []);
+
+  const onShiftOpen = () => {
+    setIsShiftOpen(true);
+  };
 
   const getBodyPage = () => {
     if (isDataFetching) {
@@ -36,7 +37,7 @@ const HomePage = () => {
     if (isShiftOpen) {
       return <HomeOptions />;
     }
-    return <StartShiftMenu />;
+    return <StartShiftMenu onShiftOpen={onShiftOpen} />;
   };
 
   return (

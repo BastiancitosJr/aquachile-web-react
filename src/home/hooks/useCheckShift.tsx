@@ -24,7 +24,7 @@ const useCheckShift = () => {
     }
 
     try {
-      const response: GetShiftDto = await get(`shift/${shiftId}`);
+      const response: GetShiftDto = await get(`shifts/${shiftId}`);
       return {
         isShiftOpen: true,
         shiftInformation: response,
