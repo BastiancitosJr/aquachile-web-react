@@ -29,8 +29,11 @@ const FormsManager = ({ shiftId, formId, onModalClose }: Props) => {
     getKPIsShowState(formId);
 
   const onClose = (formShortName: string, isSuccess: boolean) => {
-    toast.success(`${formShortName} agregado correctamente`, toastifyPayload);
     onModalClose();
+
+    if (isSuccess) {
+      toast.success(`${formShortName} agregado correctamente`, toastifyPayload);
+    }
   };
 
   return (
