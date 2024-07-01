@@ -25,7 +25,7 @@ const KPICard = ({
   };
 
   return (
-    <Card className={`${className}`} onClick={handleClick}>
+    <Card className={` hover:bg-gray-200 ${className}`} onClick={handleClick}>
       <Icon className="w-full h-20" />
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         {title}

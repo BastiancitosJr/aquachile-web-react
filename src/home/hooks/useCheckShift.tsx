@@ -1,10 +1,12 @@
 import useAxios from "../../api/hooks/useAxios";
 import useStorage from "../../common/hooks/useStorage";
 import { GetShiftDto } from "../dtos/get-shift-dto";
+import { ShiftInformation } from "../models/shift-information";
+import { mapGetShiftDtoToShiftInformation } from "../services/home-mapper";
 
 interface CheckShiftResponse {
   isShiftOpen: boolean;
-  shiftInformation?: GetShiftDto;
+  shiftInformation?: ShiftInformation;
 }
 
 const shiftNotOpenPayload = {
@@ -25,9 +27,11 @@ const useCheckShift = () => {
 
     try {
       const response: GetShiftDto = await get(`shifts/${shiftId}`);
+      const mappedShift = mapGetShiftDtoToShiftInformation(response);
+
       return {
         isShiftOpen: true,
-        shiftInformation: response,
+        shiftInformation: mappedShift,
       };
     } catch (err) {
       setShift("");

@@ -4,19 +4,22 @@ import StartShiftMenu from "../components/StartShiftMenu";
 import useCheckShift from "../hooks/useCheckShift";
 import Spinner from "../../common/components/Spinner";
 import { toast, ToastContainer } from "react-toastify";
+import { ShiftInformation } from "../models/shift-information";
 
 const HomePage = () => {
   const [isDataFetching, setIsDataFetching] = useState(true);
   const [isShiftOpen, setIsShiftOpen] = useState(false);
+  const [shiftInformation, setShiftInformation] = useState<
+    ShiftInformation | undefined
+  >(undefined);
   const checkShift = useCheckShift();
 
   useEffect(() => {
     const fetchData = async () => {
       const { isShiftOpen, shiftInformation } = await checkShift();
 
-      if (isShiftOpen) {
-        console.log("Shift is open", shiftInformation);
-        console.log(shiftInformation);
+      if (isShiftOpen && shiftInformation) {
+        setShiftInformation(shiftInformation);
       }
 
       setIsShiftOpen(isShiftOpen);
@@ -45,8 +48,8 @@ const HomePage = () => {
       return <Spinner />;
     }
 
-    if (isShiftOpen) {
-      return <HomeOptions />;
+    if (isShiftOpen && shiftInformation) {
+      return <HomeOptions shiftInformation={shiftInformation} />;
     }
     return <StartShiftMenu onShiftOpen={onShiftOpen} />;
   };
@@ -66,7 +69,7 @@ const HomePage = () => {
         theme="light"
       />
       <h1 className="text-6xl md:text-7xl">Bienvenido</h1>
-      <h2 className="text-xl md:text-2xl mt-1 mb-10 text-aqclOrange-500 uppercase font-semibold">
+      <h2 className="text-xl md:text-2xl mt-1 mb-5 text-aqclOrange-500 uppercase font-semibold">
         Gerenciamiento diario AquaChile
       </h2>
       {getBodyPage()}
