@@ -4,6 +4,7 @@ import { kpiData } from "../constants/kpi-data";
 import FormsManager from "./FormsManager";
 import ShiftInformationCard from "./ShiftInformationCard";
 import { ShiftInformation } from "../models/shift-information";
+import { ToastContainer } from "react-toastify";
 
 interface Props {
   shiftInformation: ShiftInformation;
@@ -28,6 +29,7 @@ const HomeOptions = ({ shiftInformation }: Props) => {
         className="mb-10"
         shiftInformation={shiftInformation}
       />
+      <ToastContainer />
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
         <FormsManager
           formId={currentKPIModal}

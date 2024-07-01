@@ -1,4 +1,4 @@
-import { toast, ToastContainer, ToastOptions } from "react-toastify";
+import { toast, ToastOptions } from "react-toastify";
 import AddShiftAuditModal from "../../KPIs/components/AddShiftAuditModal";
 import AddShiftCleanModal from "../../KPIs/components/AddShiftCleanModal";
 import AddShiftIncidentsModal from "../../KPIs/components/AddShiftIncidentsModal";
@@ -38,7 +38,6 @@ const FormsManager = ({ shiftId, formId, onModalClose }: Props) => {
 
   return (
     <>
-      <ToastContainer />
       <AddShiftProductivityModal show={productivity} onModalClose={onClose} />
       <AddShiftAuditModal show={audit} onModalClose={onClose} />
       <AddShiftCleanModal
