@@ -6,11 +6,12 @@ import AddShiftSafetyModal from "../../KPIs/components/AddShiftSafetyModal";
 import { getKPIsShowState } from "../utils/get-kpis-show-state";
 
 interface Props {
+  shiftId: string;
   formId: string | undefined;
   onModalClose: () => void;
 }
 
-const FormsManager = ({ formId, onModalClose }: Props) => {
+const FormsManager = ({ shiftId, formId, onModalClose }: Props) => {
   //TODO: ELIMINE EL monthlyProgress porque no estaba siendo usado
   const { productivity, audit, cleaning, safety, incidents } =
     getKPIsShowState(formId);
@@ -22,7 +23,11 @@ const FormsManager = ({ formId, onModalClose }: Props) => {
         onModalClose={onModalClose}
       />
       <AddShiftAuditModal show={audit} onModalClose={onModalClose} />
-      <AddShiftCleanModal show={cleaning} onModalClose={onModalClose} />
+      <AddShiftCleanModal
+        shiftId={shiftId}
+        show={cleaning}
+        onModalClose={onModalClose}
+      />
       <AddShiftSafetyModal show={safety} onModalClose={onModalClose} />
       <AddShiftIncidentsModal show={incidents} onModalClose={onModalClose} />
     </>

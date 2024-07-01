@@ -2,6 +2,8 @@ import { Button, Label, Modal, Radio, Textarea } from "flowbite-react";
 import { cleaningKPI } from "../../home/constants/kpi-data";
 import Divider from "../../common/components/Divider";
 import { useForm } from "react-hook-form";
+import useCreateNewCleanliness from "../hooks/cleaning/useCreateNewCleanliness";
+import { useState } from "react";
 
 const formTexts = {
   title: cleaningKPI.title,
@@ -15,25 +17,40 @@ type FormInputs = {
 };
 
 interface Props {
+  shiftId: string;
   show?: boolean;
   onModalClose: () => void;
 }
 
-const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
+const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
+  const [sendingData, setSendingData] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
-
+  const createNewCleanliness = useCreateNewCleanliness();
   if (!show) return null;
 
   const handleClose = () => {
     onModalClose();
   };
 
-  const onSubmit = (data: FormInputs) => {
-    console.log(data);
+  const onSubmit = async (data: FormInputs) => {
+    setSendingData(true);
+    try {
+      // TODO: Unhardcode this LineID
+      createNewCleanliness("1", {
+        isDone: data.auditOptions === "SI",
+        comment: data.auditComment,
+        shiftId,
+      });
+      handleClose();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setSendingData(false);
+    }
   };
 
   return (
@@ -114,7 +131,12 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
             {errors.auditComment && (
               <p className="text-red-500">{errors.auditComment?.message}</p>
             )}
-            <Button className="w-full mt-5" type="submit" color="enterprise">
+            <Button
+              className="w-full mt-5"
+              type="submit"
+              color="enterprise"
+              isProcessing={sendingData}
+            >
               {formTexts.button}
             </Button>
           </form>
