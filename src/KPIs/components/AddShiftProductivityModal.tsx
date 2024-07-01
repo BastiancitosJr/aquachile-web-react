@@ -7,9 +7,12 @@ const formTexts = {
   button: "Agregar Productividad",
 };
 
+
+const formShortName = "Productividad";
+
 interface Props {
   show?: boolean;
-  onModalClose: () => void;
+  onModalClose: (formShortName: string, isSuccess: boolean) => void;
 }
 
 const AddShiftProductivityModal = ({ show, onModalClose }: Props) => {
@@ -18,7 +21,7 @@ const AddShiftProductivityModal = ({ show, onModalClose }: Props) => {
   if (!show) return null;
 
   const handleClose = () => {
-    onModalClose();
+    onModalClose(formShortName, false);
   };
 
   return (

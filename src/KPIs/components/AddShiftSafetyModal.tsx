@@ -8,16 +8,18 @@ const formTexts = {
   questionTitle: "¿Hubo una conversación de seguridad en el equipo?",
 };
 
+const formShortName = "Limpieza";
+
 interface Props {
   show?: boolean;
-  onModalClose: () => void;
+  onModalClose: (formShortName: string, isSuccess: boolean) => void;
 }
 
 const AddShiftSafetyModal = ({ show, onModalClose }: Props) => {
   if (!show) return null;
 
   const handleClose = () => {
-    onModalClose();
+    onModalClose(formShortName, false);
   };
 
   return (

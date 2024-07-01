@@ -16,10 +16,12 @@ type FormInputs = {
   auditComment: string;
 };
 
+const formShortName = "Limpieza";
+
 interface Props {
   shiftId: string;
   show?: boolean;
-  onModalClose: () => void;
+  onModalClose: (formShortName: string, isSuccess: boolean) => void;
 }
 
 const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
@@ -33,7 +35,7 @@ const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
   if (!show) return null;
 
   const handleClose = () => {
-    onModalClose();
+    onModalClose(formShortName, false);
   };
 
   const onSubmit = async (data: FormInputs) => {
@@ -45,7 +47,7 @@ const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
         comment: data.auditComment,
         shiftId,
       });
-      handleClose();
+      onModalClose(formShortName, true);
     } catch (err) {
       console.log(err);
     } finally {

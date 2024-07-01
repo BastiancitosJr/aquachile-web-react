@@ -9,16 +9,18 @@ const formTexts = {
   isAuditOk: "¿Cumple con la calidad de etiquetado?",
 };
 
+const formShortName = "Auditoría";
+
 interface Props {
   show?: boolean;
-  onModalClose: () => void;
+  onModalClose: (formShortName: string, isSuccess: boolean) => void;
 }
 
 const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
   if (!show) return null;
 
   const handleClose = () => {
-    onModalClose();
+    onModalClose(formShortName, false);
   };
 
   return (

@@ -8,7 +8,6 @@ const useCreateNewCleanliness = () => {
   const createNew = async (lineId: string, form: CreateCleaningDto) => {
     const mappedBody = CreateCleaningDtoToCreateCleaningAPIDto(form);
     const response = await post(`cleanlinesses/${lineId}`, mappedBody);
-    console.log(response);
   };
 
   return createNew;
