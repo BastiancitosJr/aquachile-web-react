@@ -1,7 +1,5 @@
 export interface CreateQualityAPIDto {
-  deviations: number;
-
-  audits: string;
+  done: boolean;
 
   comment: string;
 

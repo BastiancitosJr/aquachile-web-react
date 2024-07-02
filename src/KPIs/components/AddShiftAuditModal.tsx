@@ -1,6 +1,9 @@
 import { Button, Label, Modal, Radio, Textarea } from "flowbite-react";
 import { auditKPI } from "../../home/constants/kpi-data";
 import Divider from "../../common/components/Divider";
+import useCreateNewAudit from "../hooks/quality/useCreateNewAudit";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const formTexts = {
   title: auditKPI.title,
@@ -9,18 +12,49 @@ const formTexts = {
   isAuditOk: "¿Cumple con la calidad de etiquetado?",
 };
 
+type FormInputs = {
+  auditOptions: string;
+  auditComment: string;
+};
+
 const formShortName = "Auditoría";
 
 interface Props {
+  shiftId: string;
   show?: boolean;
   onModalClose: (formShortName: string, isSuccess: boolean) => void;
 }
 
-const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
+const AddShiftAuditModal = ({ shiftId, show, onModalClose }: Props) => {
+  const [sendingData, setSendingData] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>();
+
+  const createNewAudit = useCreateNewAudit();
+
   if (!show) return null;
 
   const handleClose = () => {
     onModalClose(formShortName, false);
+  };
+
+  const onSubmit = async (data: FormInputs) => {
+    setSendingData(true);
+    try {
+      createNewAudit("1", {
+        isDone: data.auditOptions === "SI",
+        comment: data.auditComment,
+        shiftId,
+      });
+      onModalClose(formShortName, true);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setSendingData(false);
+    }
   };
 
   return (
@@ -32,14 +66,24 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
             {formTexts.title}
           </h3>
           <Divider className="my-5" />
-          <form className="">
+          <form onSubmit={handleSubmit(onSubmit)}>
             <h3 className="text-2xl mb-1">{formTexts.subtitle}</h3>
             <fieldset className="w-full flex justify-between px-16 mt-5">
               <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
                 {formTexts.isAuditOk}
               </legend>
               <div className="flex items-center gap-2">
-                <Radio id="no-option" name="audit-options" value="NO" />
+                <Radio
+                  id="no-option"
+                  {...register("auditOptions", {
+                    required: {
+                      value: true,
+                      message: "Debes seleccionar una opción",
+                    },
+                  })}
+                  name="audit-options"
+                  value="NO"
+                />
                 <Label htmlFor="no-option" className="uppercase text-xl">
                   NO
                 </Label>
@@ -47,15 +91,24 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
               <div className="flex items-center gap-2">
                 <Radio
                   id="yes-options"
-                  name="audit-options"
+                  {...register("auditOptions", {
+                    required: {
+                      value: true,
+                      message: "Debes seleccionar una opción",
+                    },
+                  })}
                   value="SI"
-                  defaultChecked
                 />
                 <Label htmlFor="yes-options" className="uppercase text-xl">
                   SI
                 </Label>
               </div>
             </fieldset>
+            {errors.auditOptions && (
+              <p className="text-center mt-3 text-red-500">
+                {errors.auditOptions?.message}
+              </p>
+            )}
             <div className="mb-2 block mt-10">
               <Label htmlFor="audit-comment" value="Comentario o Apreciación" />
             </div>
@@ -64,8 +117,30 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
               id="audit-comment"
               placeholder="Ej: Etiquetado en excelente estado..."
               color="enterprise"
+              {...register("auditComment", {
+                required: {
+                  value: true,
+                  message: "Debes ingresar un comentario",
+                },
+                minLength: {
+                  value: 5,
+                  message: "El comentario debe tener al menos 5 caracteres",
+                },
+                maxLength: {
+                  value: 200,
+                  message: "El comentario no puede tener más de 200 caracteres",
+                },
+              })}
             />
-            <Button className="w-full mt-5" type="submit" color="enterprise">
+            {errors.auditComment && (
+              <p className="text-red-500">{errors.auditComment?.message}</p>
+            )}
+            <Button
+              className="w-full mt-5"
+              type="submit"
+              color="enterprise"
+              isProcessing={sendingData}
+            >
               {formTexts.button}
             </Button>
           </form>

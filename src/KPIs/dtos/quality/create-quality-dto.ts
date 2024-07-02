@@ -1,7 +1,5 @@
 export interface CreateQualityDto {
-  deviations: number;
-
-  audits: string;
+  isDone: boolean;
 
   comment: string;
 
