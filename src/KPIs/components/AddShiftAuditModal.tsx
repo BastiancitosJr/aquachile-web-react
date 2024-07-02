@@ -9,14 +9,27 @@ const formTexts = {
   isAuditOk: "¿Cumple con la calidad de etiquetado?",
 };
 
+type FormInputs = {
+  auditOptions: string;
+  auditComment: string;
+};
+
 const formShortName = "Auditoría";
 
 interface Props {
+  shiftId: string;
   show?: boolean;
   onModalClose: (formShortName: string, isSuccess: boolean) => void;
 }
 
 const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
+  const [sendingData, setSendingData] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormInputs>();
+  const createNewAudit = useCreateNewAudit();
   if (!show) return null;
 
   const handleClose = () => {
