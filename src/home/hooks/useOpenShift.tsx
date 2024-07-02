@@ -18,7 +18,6 @@ const useOpenShift = () => {
       const response: CreateShiftResponseDto = await post("shifts/open");
       const mappedResponse = createShiftResponseDto(response);
       setShift(mappedResponse.id);
-
       return {
         wasCreated: true,
         shiftInformation: mappedResponse,
