@@ -1,5 +1,7 @@
 import { CreateCleaningAPIDto } from "../../KPIs/dtos/cleaning/create-cleaning-api-dto";
 import { CreateCleaningDto } from "../../KPIs/dtos/cleaning/create-cleaning-dto";
+import { CreateQualityAPIDto } from "../../KPIs/dtos/quality/create-quality-api.dto";
+import { CreateQualityDto } from "../../KPIs/dtos/quality/create-quality-dto";
 import { CreateShiftResponseDto } from "../dtos/create-shift-response-dto";
 import { GetShiftDto } from "../dtos/get-shift-dto";
 import { ShiftInformation } from "../models/shift-information";
@@ -29,6 +31,17 @@ export const CreateCleaningDtoToCreateCleaningAPIDto = (
 ): CreateCleaningAPIDto => {
   return {
     done: domainDto.isDone,
+    comment: domainDto.comment,
+    uuid: domainDto.shiftId,
+  };
+};
+
+export const CreateQualityToCreateCleaningAPIDto = (
+  domainDto: CreateQualityDto
+): CreateQualityAPIDto => {
+  return {
+    deviations: domainDto.deviations,
+    audits: domainDto.audits,
     comment: domainDto.comment,
     uuid: domainDto.shiftId,
   };
