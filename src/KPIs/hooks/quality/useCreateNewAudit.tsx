@@ -7,7 +7,7 @@ const useCreateNewAudit = () => {
 
   const createNew = async (lineId: string, form: CreateQualityDto) => {
     const mappedBody = CreateQualityToCreateCleaningAPIDto(form);
-    const response = await post(`labeling-qualities/${lineId}`, mappedBody);
+    await post(`labeling-qualities/${lineId}`, mappedBody);
   };
 
   return createNew;
