@@ -11,7 +11,7 @@ const useListAllAudits = () => {
   const getAll = async (): Promise<ObservationResponse[]> => {
     try {
       const allObservations: GetallAuditResponseDto[] = await get(
-        `cleanliness/${shiftId}`
+        `cleanlinesses-shift/${shiftId}`
       );
       const mappedObservations =
         mapGetallAuditResponseDtoToAuditResponse(allObservations);
