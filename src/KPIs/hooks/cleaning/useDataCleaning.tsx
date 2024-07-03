@@ -17,7 +17,7 @@ const useDataCleaning = () => {
         mapGetUniqueAuditResponseDtoToCleaningResponse(response);
 
       return mappedData;
-    } catch (err) {
+    } catch {
       return undefined;
     }
   };
