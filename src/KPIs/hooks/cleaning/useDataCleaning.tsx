@@ -11,7 +11,6 @@ const useDataCleaning = () => {
       const audit: GetUniqueAuditResponseDto = await get(
         `cleanlinesses-shift/${shiftId}`
       );
-      console.log("Desde el hook", audit);
       return audit;
     } catch (err) {
       return {
