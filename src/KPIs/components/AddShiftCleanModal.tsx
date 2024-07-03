@@ -59,7 +59,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
           });
         }
       } catch (err) {
-        console.error("Error fetching audit in component:", err);
+        console.error(err);
       } finally {
         setLoadingObservation(false);
       }
