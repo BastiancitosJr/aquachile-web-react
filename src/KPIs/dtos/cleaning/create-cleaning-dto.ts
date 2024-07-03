@@ -1,5 +1,5 @@
 export interface CreateCleaningDto {
-  is_done: boolean;
+  isDone: boolean;
 
   comment: string;
 

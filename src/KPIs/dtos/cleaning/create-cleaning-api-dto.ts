@@ -1,5 +1,5 @@
 export interface CreateCleaningAPIDto {
-  isDone: boolean;
+  is_done: boolean;
 
   comment: string;
 

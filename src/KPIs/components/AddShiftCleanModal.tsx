@@ -71,7 +71,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
     setSendingData(true);
     try {
       await createNewCleanliness("1", {
-        is_done: data.isClean === "SI",
+        isDone: data.isClean === "SI",
         comment: data.observationComment,
         shiftId,
       });

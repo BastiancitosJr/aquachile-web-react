@@ -10,7 +10,6 @@ export const mapGetShiftDtoToShiftInformation = (
   dto: GetShiftDto
 ): ShiftInformation => {
   const endTime = dto.end_time ? new Date(dto.end_time) : null;
-
   return {
     id: dto.id,
     shiftName: dto.shift,
