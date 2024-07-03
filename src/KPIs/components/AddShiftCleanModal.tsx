@@ -1,4 +1,4 @@
-import { Button, Label, Modal, Textarea } from "flowbite-react";
+import { Button, Label, Modal, Textarea, Radio } from "flowbite-react";
 import { cleaningKPI } from "../../home/constants/kpi-data";
 import Divider from "../../common/components/Divider";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ const formTexts = {
 };
 
 type FormInputs = {
+  isClean: boolean;
   observationComment: string;
 };
 
@@ -52,10 +53,13 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
         const audit = await getCleaningAudit();
         console.log("Desde el modal", audit);
         if (audit) {
+          const { id, comment, created_at } = audit;
           setObservationData({
-            ...audit,
-            created_at: new Date(audit.created_at),
-            updated_at: new Date(audit.updated_at),
+            id,
+            comment,
+            created_at: new Date(created_at),
+            updated_at: new Date(created_at),
+            is_done: false,
           });
         }
       } catch (err) {
@@ -64,7 +68,6 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
         setLoadingObservation(false);
       }
     };
-
     fetchAudit();
   }, [show]);
 
@@ -78,7 +81,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
     setSendingData(true);
     try {
       await createNewCleanliness("1", {
-        isDone: true,
+        is_done: data.isClean,
         comment: data.observationComment,
         shiftId,
       });
@@ -105,40 +108,102 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
               <Spinner />
             </div>
           ) : (
-            observationData && (
-              <div className="grid grid-cols-2 items-start gap-5">
-                <p>
-                  <span className="font-bold">Limpieza: </span>
-                  {observationData.comment}
+            <div className="my-5 text-lg">
+              {observationData ? (
+                <div className="flex items-center gap-5">
+                  <p>
+                    <span className="font-bold">Comentario: </span>
+                    {observationData.comment}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-sm">
+                  No se han realizado auditorías en este turno todavía
                 </p>
-                <p>
-                  <span className="font-bold">Realizada el: </span>
-                  {observationData.created_at.toLocaleString()}
-                </p>
-              </div>
-            )
+              )}
+            </div>
           )}
+          <Divider className="my-5" />
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Label htmlFor="observationComment">
-              {formTexts.questionTitle}
-            </Label>
+            <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
+            <fieldset className="w-full flex justify-between px-16 mt-5">
+              <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
+                {formTexts.questionTitle}
+              </legend>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="no-option"
+                  {...register("isClean", {
+                    required: {
+                      value: true,
+                      message: "Debes seleccionar una opción",
+                    },
+                  })}
+                  name="cleanliness-options"
+                  value="false"
+                />
+                <Label htmlFor="no-option" className="uppercase text-xl">
+                  NO
+                </Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="yes-option"
+                  {...register("isClean", {
+                    required: {
+                      value: true,
+                      message: "Debes seleccionar una opción",
+                    },
+                  })}
+                  name="cleanliness-options"
+                  value="true"
+                />
+                <Label htmlFor="yes-options" className="uppercase text-xl">
+                  SI
+                </Label>
+              </div>
+            </fieldset>
+            {errors.observationComment && (
+              <p className="text-center mt-3 text-red-500">
+                {errors.observationComment?.message}
+              </p>
+            )}
+            <div className="mb-2 block mt-10">
+              <Label htmlFor="audit-comment" value="Comentario o Apreciación" />
+            </div>
             <Textarea
-              id="observationComment"
-              {...register("observationComment", { required: true })}
               rows={4}
-              className="my-2"
+              id="audit-comment"
+              placeholder="Ej: Etiquetado en excelente estado..."
+              color="enterprise"
+              {...register("observationComment", {
+                required: {
+                  value: true,
+                  message: "Debes ingresar un comentario",
+                },
+                minLength: {
+                  value: 5,
+                  message: "El comentario debe tener al menos 5 caracteres",
+                },
+                maxLength: {
+                  value: 200,
+                  message: "El comentario no puede tener más de 200 caracteres",
+                },
+              })}
             />
             {errors.observationComment && (
-              <span className="text-red-600">Este campo es requerido</span>
+              <p className="text-red-500">
+                {errors.observationComment?.message}
+              </p>
             )}
-            <div className="flex justify-end gap-4 mt-4">
-              <Button type="button" onClick={handleClose} color="gray">
-                Cancelar
-              </Button>
-              <Button type="submit" color="blue" disabled={sendingData}>
-                {sendingData ? "Enviando..." : formTexts.button}
-              </Button>
-            </div>
+            <Button
+              className="w-full mt-5"
+              type="submit"
+              color="enterprise"
+              isProcessing={sendingData}
+            >
+              {formTexts.button}
+            </Button>
           </form>
         </div>
       </Modal.Body>
