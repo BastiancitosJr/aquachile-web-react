@@ -18,13 +18,11 @@ const toastifyPayload: ToastOptions = {
 };
 
 interface Props {
-  shiftId: string;
   formId: string | undefined;
   onModalClose: () => void;
 }
 
-const FormsManager = ({ shiftId, formId, onModalClose }: Props) => {
-  //TODO: ELIMINE EL monthlyProgress porque no estaba siendo usado
+const FormsManager = ({ formId, onModalClose }: Props) => {
   const { productivity, audit, cleaning, safety, incidents } =
     getKPIsShowState(formId);
 
@@ -40,11 +38,7 @@ const FormsManager = ({ shiftId, formId, onModalClose }: Props) => {
     <>
       <AddShiftProductivityModal show={productivity} onModalClose={onClose} />
       <AddShiftAuditModal show={audit} onModalClose={onClose} />
-      <AddShiftCleanModal
-        shiftId={shiftId}
-        show={cleaning}
-        onModalClose={onClose}
-      />
+      <AddShiftCleanModal show={cleaning} onModalClose={onClose} />
       <AddShiftSafetyModal show={safety} onModalClose={onClose} />
       <AddShiftIncidentsModal show={incidents} onModalClose={onClose} />
     </>

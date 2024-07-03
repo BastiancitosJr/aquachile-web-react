@@ -29,11 +29,7 @@ const HomeOptions = ({ shiftInformation }: Props) => {
         shiftInformation={shiftInformation}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-        <FormsManager
-          formId={currentKPIModal}
-          onModalClose={onModalClose}
-          shiftId={shiftInformation.id}
-        />
+        <FormsManager formId={currentKPIModal} onModalClose={onModalClose} />
         {kpiData.map(({ id, icon, title, description }) => (
           <KPICard
             key={id}
