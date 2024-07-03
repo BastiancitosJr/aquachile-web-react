@@ -27,7 +27,7 @@ const HomePage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [checkShift]);
 
   const onShiftOpen = () => {
     setIsShiftOpen(true);

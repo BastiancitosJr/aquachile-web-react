@@ -1,4 +1,4 @@
-import { Button, Card } from "flowbite-react";
+import { Card } from "flowbite-react";
 import { ShiftInformation } from "../models/shift-information";
 
 interface Props {
