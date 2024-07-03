@@ -33,7 +33,11 @@ const useStorage = create<StorageState>()(
       ...defaultState,
       setAuthentication: (newToken, newRole, newRoleId) =>
         set({ token: newToken, role: newRole, roleId: newRoleId }),
-      removeAuthentication: () => set(defaultState),
+      removeAuthentication: () =>
+        set((state) => ({
+          ...defaultState,
+          shiftId: state.shiftId,
+        })),
       setShift: (newShiftId) => set({ shiftId: newShiftId }),
     }),
     {

@@ -3,7 +3,7 @@ import HomeOptions from "../components/HomeOptions";
 import StartShiftMenu from "../components/StartShiftMenu";
 import useCheckShift from "../hooks/useCheckShift";
 import Spinner from "../../common/components/Spinner";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { ShiftInformation } from "../models/shift-information";
 
 const HomePage = () => {
@@ -17,20 +17,32 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { isShiftOpen, shiftInformation } = await checkShift();
+      setIsDataFetching(false);
 
-      if (isShiftOpen && shiftInformation) {
-        setShiftInformation(shiftInformation);
-      }
+      setShiftInformation(shiftInformation);
 
       setIsShiftOpen(isShiftOpen);
-      setIsDataFetching(false);
     };
 
     fetchData();
   }, [checkShift]);
 
-  const onShiftOpen = () => {
+  const onShiftOpen = (shiftInformation?: ShiftInformation) => {
+    if (!shiftInformation) {
+      toast.error("Hubo un error al iniciar el turno", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
     setIsShiftOpen(true);
+    setShiftInformation(shiftInformation);
     toast.success("Turno Iniciado", {
       position: "top-right",
       autoClose: 1500,
@@ -48,26 +60,16 @@ const HomePage = () => {
       return <Spinner />;
     }
 
-    if (isShiftOpen && shiftInformation) {
-      return <HomeOptions shiftInformation={shiftInformation} />;
+    if (isShiftOpen) {
+      return (
+        <HomeOptions shiftInformation={shiftInformation as ShiftInformation} />
+      );
     }
     return <StartShiftMenu onShiftOpen={onShiftOpen} />;
   };
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <h1 className="text-6xl md:text-7xl">Bienvenido</h1>
       <h2 className="text-xl md:text-2xl mt-1 mb-5 text-aqclOrange-500 uppercase font-semibold">
         Gerenciamiento diario AquaChile

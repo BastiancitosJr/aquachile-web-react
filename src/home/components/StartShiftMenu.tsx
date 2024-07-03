@@ -1,18 +1,19 @@
 import { Button } from "flowbite-react";
 import useOpenShift from "../hooks/useOpenShift";
+import { ShiftInformation } from "../models/shift-information";
 
 interface Props {
-  onShiftOpen: () => void;
+  onShiftOpen: (shiftInformation?: ShiftInformation) => void;
 }
 
 const StartShiftMenu = ({ onShiftOpen }: Props) => {
   const openShift = useOpenShift();
 
   const initializeShift = async () => {
-    const { wasCreated } = await openShift();
+    const { wasCreated, shiftInformation } = await openShift();
 
     if (wasCreated) {
-      onShiftOpen();
+      onShiftOpen(shiftInformation);
     }
   };
 
@@ -21,7 +22,12 @@ const StartShiftMenu = ({ onShiftOpen }: Props) => {
       <p className="text-xl font-semibold mb-3">
         Debes comenzar un turno antes de continuar...
       </p>
-      <Button className="w-full max-w-md" color="enterpriseOrange" size="lg" onClick={initializeShift}>
+      <Button
+        className="w-full max-w-md"
+        color="enterpriseOrange"
+        size="lg"
+        onClick={initializeShift}
+      >
         Iniciar turno
       </Button>
     </>
