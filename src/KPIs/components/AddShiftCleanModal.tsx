@@ -1,4 +1,4 @@
-import { Button, Label, Modal, Radio, Textarea } from "flowbite-react";
+import { Button, Label, Modal, Textarea } from "flowbite-react";
 import { cleaningKPI } from "../../home/constants/kpi-data";
 import Divider from "../../common/components/Divider";
 import { useForm } from "react-hook-form";
@@ -69,38 +69,6 @@ const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
               <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
                 {formTexts.isAuditOk}
               </legend>
-              <div className="flex items-center gap-2">
-                <Label htmlFor="no-option" className="uppercase text-xl">
-                  NO
-                </Label>
-                <Radio
-                  id="no-option"
-                  {...register("auditOptions", {
-                    required: {
-                      value: true,
-                      message: "Debes seleccionar una opción",
-                    },
-                  })}
-                  name="audit-options"
-                  value="NO"
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <Label htmlFor="yes-options" className="uppercase text-xl">
-                  SI
-                </Label>
-                <Radio
-                  id="yes-options"
-                  {...register("auditOptions", {
-                    required: {
-                      value: true,
-                      message: "Debes seleccionar una opción",
-                    },
-                  })}
-                  name="audit-options"
-                  value="SI"
-                />
-              </div>
             </fieldset>
             {errors.auditOptions && (
               <p className="text-center mt-3 text-red-500">
