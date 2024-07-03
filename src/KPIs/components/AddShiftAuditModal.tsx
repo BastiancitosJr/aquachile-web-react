@@ -91,7 +91,7 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
             {formTexts.title}
           </h3>
           <Divider className="my-5" />
-          <h3 className="text-2xl mb-1">{formTexts.subtitle}</h3>
+          <h4 className="text-2xl mb-1">{formTexts.subtitle}</h4>
           {loadingAudits && (
             <div className="flex justify-center my-5">
               <Spinner />
@@ -126,7 +126,7 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
           )}
           <Divider className="my-5" />
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h3 className="text-2xl mb-1">{formTexts.subtitleTwo}</h3>
+            <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
             <fieldset className="w-full flex justify-between px-16 mt-5">
               <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
                 {formTexts.isAuditOk}
