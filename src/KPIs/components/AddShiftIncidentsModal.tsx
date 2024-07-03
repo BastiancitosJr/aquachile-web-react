@@ -1,6 +1,7 @@
 import { Button, Label, Modal, Textarea } from "flowbite-react";
 import { incidentsKPI } from "../../home/constants/kpi-data";
 import Divider from "../../common/components/Divider";
+import { GetIncidentsResponseDto } from "../dtos/incidents/get-incidents-response-dto";
 
 const formTexts = {
   title: incidentsKPI.title,
@@ -25,6 +26,8 @@ const AddShiftIncidentsModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
   const [loadingObservation, setLoadingObservation] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [observationData, setObservationData] =
+    useState<GetIncidentsResponseDto> | (null > null);
 
   if (!show) return null;
 
