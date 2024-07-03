@@ -1,27 +1,32 @@
 import useAxios from "../../../api/hooks/useAxios";
 import useUserInformation from "../../../auth/hooks/useUserInformation";
-import { GetallAuditResponseDto } from "../../dtos/cleaning/get-all-audit-response-dto";
-import { AuditResponse } from "../../models/cleaning/audit-response";
-import { mapGetallAuditResponseDtoToAuditResponse } from "../../services/kpis-mapper";
+import { GetUniqueAuditResponseDto } from "../../dtos/cleaning/get-unique-audit-response-dto";
+import { ObservationResponse } from "../../models/safety/observation-response";
+import { mapUniqueCleaningResponseDtoToAuditResponse } from "../../services/kpis-mapper";
 
 const useListAllAudits = () => {
   const { get } = useAxios();
   const { shiftId } = useUserInformation();
 
-  const getAll = async (): Promise<AuditResponse[]> => {
+  const getCleaningAudit = async (): Promise<ObservationResponse> => {
     try {
-      const allAudits: GetallAuditResponseDto[] = await get(
-        `labeling-qualities-shift/${shiftId}`
+      const uniqueAudit: GetUniqueAuditResponseDto = await get(
+        `cleanlinesses-shift/${shiftId}`
       );
-      const mappedAudits = mapGetallAuditResponseDtoToAuditResponse(allAudits);
-
-      return mappedAudits;
+      console.log("Raw audit data:", uniqueAudit); // Verifica los datos crudos aquí
+      const mappedAudit =
+        mapUniqueCleaningResponseDtoToAuditResponse(uniqueAudit);
+      console.log("Mapped audit data:", mappedAudit); // Verifica los datos mapeados aquí
+      return mappedAudit;
     } catch (err) {
-      return [];
+      console.error("Error fetching audit:", err);
+      throw err;
     }
   };
 
-  return getAll;
+  return getCleaningAudit;
+
+  return getCleaningAudit;
 };
 
 export default useListAllAudits;

@@ -11,7 +11,7 @@ import { ObservationResponse } from "../models/safety/observation-response";
 
 const formTexts = {
   title: cleaningKPI.title,
-  subtitle: "Limpiezas realizadas",
+  subtitle: "Limpieza realizada",
   subtitleTwo: "Agregar nueva limpieza",
   button: "Enviar Revisión",
   questionTitle: "¿El lugar de trabajo se encuentra limpio al recibirlo?",
@@ -30,10 +30,9 @@ interface Props {
 
 const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
-  const [loadingObservations, setLoadingObservations] = useState(true);
-  const [observationsData, setObservationsData] = useState<
-    ObservationResponse[]
-  >([]);
+  const [loadingObservation, setLoadingObservation] = useState(true);
+  const [observationData, setObservationData] =
+    useState<ObservationResponse | null>(null);
 
   const {
     register,
@@ -44,23 +43,25 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   const { shiftId } = useUserInformation();
 
   const createNewCleanliness = useCreateNewCleanliness();
-  const listAllAudits = useListAllAudits();
+  const getCleaningAudit = useListAllAudits();
 
   useEffect(() => {
-    const fetchAudits = async () => {
-      setLoadingObservations(true);
-      if (!show) return null;
+    console.log("Shift ID:", shiftId);
+    const fetchAudit = async () => {
+      setLoadingObservation(true);
+      if (!show) return;
       try {
-        const audits = await listAllAudits();
-        setObservationsData(audits);
+        const audit = await getCleaningAudit();
+        console.log("AUDITORIA", audit);
+        setObservationData(audit);
       } catch (err) {
         console.error(err);
       } finally {
-        setLoadingObservations(false);
+        setLoadingObservation(false);
       }
     };
 
-    fetchAudits();
+    fetchAudit();
   }, [show]);
 
   if (!show) return null;
@@ -72,15 +73,14 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   const onSubmit = async (data: FormInputs) => {
     setSendingData(true);
     try {
-      // TODO: Unhardcode this LineID
-      createNewCleanliness("1", {
+      await createNewCleanliness("1", {
         isDone: true,
         comment: data.observationComment,
         shiftId,
       });
       onModalClose(formShortName, true);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setSendingData(false);
     }
@@ -96,40 +96,28 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
           </h3>
           <Divider className="my-5" />
           <h4 className="text-2xl mb-1">{formTexts.subtitle}</h4>
-          {loadingObservations && (
+          {loadingObservation ? (
             <div className="flex justify-center my-5">
               <Spinner />
             </div>
-          )}
-          {!loadingObservations && (
-            <div>
-              {observationsData.length === 0 ? (
+          ) : (
+            observationData && (
+              <div className="grid grid-cols-2 items-start gap-5">
                 <p>
-                  No se han encontrado limpiezas realizadas en el turno actual
+                  <span className="font-bold">Limpieza: </span>
+                  {observationData.comment}
                 </p>
-              ) : (
-                observationsData.map((observation) => (
-                  <div
-                    key={observation.id}
-                    className="grid grid-cols-2 items-start gap-5"
-                  >
-                    <p>
-                      <span className="font-bold">Limpieza: </span>
-                      {observation.comment}
-                    </p>
-                    <p>
-                      <span className="font-bold">Realizada el: </span>
-                      {observation.createdAt.toLocaleString("es-CL", {
-                        month: "2-digit",
-                        day: "2-digit",
-                        hour: "numeric",
-                        minute: "numeric",
-                      })}
-                    </p>
-                  </div>
-                ))
-              )}
-            </div>
+                <p>
+                  <span className="font-bold">Realizada el: </span>
+                  {observationData.createdAt.toLocaleString("es-CL", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "numeric",
+                    minute: "numeric",
+                  })}
+                </p>
+              </div>
+            )
           )}
           <Divider className="my-5" />
           <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
@@ -159,7 +147,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
             />
             {errors.observationComment && (
               <p className="text-red-500">
-                {errors.observationComment?.message}
+                {errors.observationComment.message}
               </p>
             )}
             <Button
@@ -176,4 +164,5 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
     </Modal>
   );
 };
+
 export default AddShiftCleanModal;

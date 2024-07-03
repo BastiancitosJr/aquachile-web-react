@@ -20,7 +20,7 @@ export const mapGetallAuditResponseDtoToAuditResponse = (
 
 export const mapUniqueCleaningResponseDtoToAuditResponse = (
   dto: GetUniqueAuditResponseDto
-): AuditResponse => {
+): ObservationResponse => {
   return {
     id: dto.id,
     isDone: dto.is_done,
