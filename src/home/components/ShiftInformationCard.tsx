@@ -1,5 +1,6 @@
-import { Card } from "flowbite-react";
+import { Button, Card } from "flowbite-react";
 import { ShiftInformation } from "../models/shift-information";
+import useCloseShift from "../hooks/useCloseShift";
 
 interface Props {
   shiftInformation: ShiftInformation;
@@ -8,6 +9,13 @@ interface Props {
 
 const ShiftInformationCard = ({ shiftInformation, className }: Props) => {
   const { id, shiftName, createdAt } = shiftInformation;
+  const closeShift = useCloseShift();
+
+  const onShiftButtonClick = () => {
+    closeShift();
+    location.reload();
+  };
+
   return (
     <Card className={`max-w-lg mx-auto text-start ${className}`}>
       <h4 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -26,6 +34,9 @@ const ShiftInformationCard = ({ shiftInformation, className }: Props) => {
           minute: "numeric",
         })}
       </p>
+      <Button color="enterpriseOrange" outline onClick={onShiftButtonClick}>
+        Cerrar turno
+      </Button>
     </Card>
   );
 };
