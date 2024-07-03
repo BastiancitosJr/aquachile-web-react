@@ -64,7 +64,7 @@ export const kpiData: KPIData[] = [
   {
     id: monthlyProgressId,
     icon: FaRegCalendarAlt,
-    title: "Avance Mensual",
+    title: "Pedido Mensual",
     description: "Producción esperada del mes",
   },
 ];
