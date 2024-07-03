@@ -2,8 +2,10 @@ import { Button, Label, Modal, Radio, Textarea } from "flowbite-react";
 import { auditKPI } from "../../home/constants/kpi-data";
 import Divider from "../../common/components/Divider";
 import useCreateNewAudit from "../hooks/quality/useCreateNewAudit";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import useListAllAudits from "../hooks/quality/useListAllAudits";
+import useUserInformation from "../../auth/hooks/useUserInformation";
 
 const formTexts = {
   title: auditKPI.title,
@@ -20,20 +22,35 @@ type FormInputs = {
 const formShortName = "Auditoría";
 
 interface Props {
-  shiftId: string;
   show?: boolean;
   onModalClose: (formShortName: string, isSuccess: boolean) => void;
 }
 
-const AddShiftAuditModal = ({ shiftId, show, onModalClose }: Props) => {
+const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
-
+  const { shiftId } = useUserInformation();
   const createNewAudit = useCreateNewAudit();
+  const listAllAudits = useListAllAudits();
+
+  useEffect(() => {
+    const fetchAudits = async () => {
+      if (!show) return null;
+
+      try {
+        const audits = await listAllAudits();
+        console.log(audits);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchAudits();
+  }, [show]);
 
   if (!show) return null;
 
