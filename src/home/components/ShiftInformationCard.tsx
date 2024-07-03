@@ -11,9 +11,14 @@ const ShiftInformationCard = ({ shiftInformation, className }: Props) => {
   const { id, shiftName, createdAt } = shiftInformation;
   const closeShift = useCloseShift();
 
-  const onShiftButtonClick = () => {
+  const onShiftButtonClick = async () => {
     closeShift();
-    location.reload();
+    await new Promise((resolve) =>
+      setTimeout(() => {
+        location.reload();
+        return resolve;
+      }, 1500)
+    );
   };
 
   return (
