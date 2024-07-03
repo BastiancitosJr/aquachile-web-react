@@ -18,7 +18,7 @@ const formTexts = {
 };
 
 type FormInputs = {
-  isClean: boolean;
+  isClean: string; // Se maneja como string para el radio button
   observationComment: string;
 };
 
@@ -51,17 +51,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
       if (!show) return;
       try {
         const audit = await getCleaningAudit();
-        console.log("Desde el modal", audit);
-        if (audit) {
-          const { id, comment, created_at } = audit;
-          setObservationData({
-            id,
-            comment,
-            created_at: new Date(created_at),
-            updated_at: new Date(created_at),
-            is_done: false,
-          });
-        }
+        setObservationData(audit);
       } catch (err) {
         console.error(err);
       } finally {
@@ -81,7 +71,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
     setSendingData(true);
     try {
       await createNewCleanliness("1", {
-        is_done: data.isClean,
+        is_done: data.isClean === "SI",
         comment: data.observationComment,
         shiftId,
       });
@@ -139,8 +129,8 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
                       message: "Debes seleccionar una opción",
                     },
                   })}
-                  name="cleanliness-options"
-                  value="false"
+                  name="audit-options"
+                  value="NO"
                 />
                 <Label htmlFor="no-option" className="uppercase text-xl">
                   NO
@@ -148,17 +138,16 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
               </div>
               <div className="flex items-center gap-2">
                 <Radio
-                  id="yes-option"
+                  id="yes-options"
                   {...register("isClean", {
                     required: {
                       value: true,
                       message: "Debes seleccionar una opción",
                     },
                   })}
-                  name="cleanliness-options"
-                  value="true"
+                  value="SI"
                 />
-                <Label htmlFor="yes-options" className="uppercase text-xl">
+                <Label htmlFor="yes-option" className="uppercase text-xl">
                   SI
                 </Label>
               </div>
