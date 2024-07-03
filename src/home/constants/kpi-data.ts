@@ -55,18 +55,20 @@ export const incidentsKPI: KPIData = {
   description: "Accidentes ocurridos en el turno",
 };
 
+export const monthlyGoalKPI: KPIData = {
+  id: monthlyProgressId,
+  icon: FaRegCalendarAlt,
+  title: "Pedido Mensual",
+  description: "Producción esperada del mes",
+};
+
 export const kpiData: KPIData[] = [
   productivityKPI,
   auditKPI,
   cleaningKPI,
   safetyKPI,
   incidentsKPI,
-  {
-    id: monthlyProgressId,
-    icon: FaRegCalendarAlt,
-    title: "Pedido Mensual",
-    description: "Producción esperada del mes",
-  },
+  monthlyGoalKPI,
 ];
 
 export const allKpiIds = kpiData.map((kpi) => kpi.id);

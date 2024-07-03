@@ -1,6 +1,8 @@
 import { GetallAuditResponseDto } from "../dtos/cleaning/get-all-audit-response-dto";
 import { GetUniqueAuditResponseDto } from "../dtos/cleaning/get-unique-audit-response-dto";
 import { GetIncidentsResponseDto } from "../dtos/incidents/get-incidents-response-dto";
+import { CreateMonthlyGoalAPIDto } from "../dtos/monthly-goal/create-monthly-goal-api-dto";
+import { CreateMonthlyGoalDto } from "../dtos/monthly-goal/create-monthly-goal-dto";
 import { CreateProductivityAPIDto } from "../dtos/productivity/create-productivity-api-dto";
 import { CreateProductivityDto } from "../dtos/productivity/create-productivity-dto";
 import { GetOneProductivityResponseDto } from "../dtos/productivity/get-one-productivity-response-dto";
@@ -89,5 +91,14 @@ export const mapGetIncidentsResponseDtoToIncidentResponse = (
     comment: dto.comment,
     createdAt: new Date(dto.created_at),
     updatedAt: new Date(dto.updated_at),
+  };
+};
+
+export const mapCreateMonthlyGoalDtoToCreateMonthlyGoalAPIDto = (
+  dto: CreateMonthlyGoalDto
+): CreateMonthlyGoalAPIDto => {
+  return {
+    monthly_order: dto.tons,
+    uuid: dto.shiftId,
   };
 };

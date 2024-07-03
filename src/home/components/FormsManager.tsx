@@ -5,6 +5,7 @@ import AddShiftIncidentsModal from "../../KPIs/components/AddShiftIncidentsModal
 import AddShiftProductivityModal from "../../KPIs/components/AddShiftProductivityModal";
 import AddShiftSafetyModal from "../../KPIs/components/AddShiftSafetyModal";
 import { getKPIsShowState } from "../utils/get-kpis-show-state";
+import AddMonthlyExpectedTons from "../../KPIs/components/AddMonthlyExpectedTons";
 
 const toastifyPayload: ToastOptions = {
   position: "top-right",
@@ -23,7 +24,7 @@ interface Props {
 }
 
 const FormsManager = ({ formId, onModalClose }: Props) => {
-  const { productivity, audit, cleaning, safety, incidents } =
+  const { productivity, audit, cleaning, safety, incidents, monthlyProgress } =
     getKPIsShowState(formId);
 
   const onClose = (formShortName: string, isSuccess: boolean) => {
@@ -41,6 +42,7 @@ const FormsManager = ({ formId, onModalClose }: Props) => {
       <AddShiftCleanModal show={cleaning} onModalClose={onClose} />
       <AddShiftSafetyModal show={safety} onModalClose={onClose} />
       <AddShiftIncidentsModal show={incidents} onModalClose={onClose} />
+      <AddMonthlyExpectedTons show={monthlyProgress} onModalClose={onClose} />
     </>
   );
 };
