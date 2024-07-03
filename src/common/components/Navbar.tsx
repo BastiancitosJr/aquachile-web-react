@@ -4,6 +4,7 @@ import aquaChileLogoOrange from "../../assets/img/aquachile-logo-orange.webp";
 import { homePath } from "../router/routes-paths";
 import useUserInformation from "../../auth/hooks/useUserInformation";
 import useLogout from "../../auth/hooks/useLogout";
+import { toast } from "react-toastify";
 
 const navbarOptions = [
   {
@@ -30,8 +31,32 @@ const Navbar = () => {
   const { role: roleName } = useUserInformation();
   const logout = useLogout();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    const { success } = await logout();
+    if (!success) {
+      toast.error("Hubo un error al cerrar sesión", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
+    toast.info("Sesión cerrada correctamente", {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   return (
