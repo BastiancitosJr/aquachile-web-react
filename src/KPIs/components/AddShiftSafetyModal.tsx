@@ -61,7 +61,7 @@ const AddShiftSafetyModal = ({ show, onModalClose }: Props) => {
     };
 
     fetchObservations();
-  }, [listAllObservations, show]);
+  }, [show]);
 
   if (!show) return null;
 

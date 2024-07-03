@@ -61,7 +61,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
     };
 
     fetchAudits();
-  }, [listAllAudits, show]);
+  }, [show]);
 
   if (!show) return null;
 
