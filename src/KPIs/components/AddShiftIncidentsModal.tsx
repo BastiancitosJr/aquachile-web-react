@@ -4,8 +4,14 @@ import Divider from "../../common/components/Divider";
 
 const formTexts = {
   title: incidentsKPI.title,
+  subtitle: "Incidentes registrados",
+  subtitleTwo: "Agregar nuevo incidente",
   button: "Enviar Incidente",
   questionTitle: "¿Hubo un incidente en el turno?",
+};
+
+type FormInputs = {
+  incidentComment: string;
 };
 
 const formShortName = "Incidentes";
@@ -16,6 +22,10 @@ interface Props {
 }
 
 const AddShiftIncidentsModal = ({ show, onModalClose }: Props) => {
+  const [sendingData, setSendingData] = useState(false);
+  const [loadingObservation, setLoadingObservation] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   if (!show) return null;
 
   const handleClose = () => {
