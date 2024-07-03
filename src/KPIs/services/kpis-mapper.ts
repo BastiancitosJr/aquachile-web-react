@@ -3,6 +3,7 @@ import { GetUniqueAuditResponseDto } from "../dtos/cleaning/get-unique-audit-res
 import { GetIncidentsResponseDto } from "../dtos/incidents/get-incidents-response-dto";
 import { CreateMonthlyGoalAPIDto } from "../dtos/monthly-goal/create-monthly-goal-api-dto";
 import { CreateMonthlyGoalDto } from "../dtos/monthly-goal/create-monthly-goal-dto";
+import { MonthlyGoalResponseDto } from "../dtos/monthly-goal/get-monthly-goal-response-dto";
 import { CreateProductivityAPIDto } from "../dtos/productivity/create-productivity-api-dto";
 import { CreateProductivityDto } from "../dtos/productivity/create-productivity-dto";
 import { GetOneProductivityResponseDto } from "../dtos/productivity/get-one-productivity-response-dto";
@@ -12,6 +13,7 @@ import { GetallObservationResponseDto } from "../dtos/safety/get-all-observation
 import { AuditResponse } from "../models/cleaning/audit-response";
 import { CleaningResponse } from "../models/cleaning/cleaning-response";
 import { IncidentResponse } from "../models/incidents/incident-response";
+import { MonthlyGoal } from "../models/monthly-goal/monthly-goal-response";
 import { ProductivityResponse } from "../models/productivity/productivity-response";
 import { ObservationResponse } from "../models/safety/observation-response";
 
@@ -100,5 +102,16 @@ export const mapCreateMonthlyGoalDtoToCreateMonthlyGoalAPIDto = (
   return {
     monthly_order: dto.tons,
     uuid: dto.shiftId,
+  };
+};
+
+export const mapMonthlyGoalResponseDtoToMonthlyGoal = (
+  dto: MonthlyGoalResponseDto
+): MonthlyGoal => {
+  return {
+    id: dto.id,
+    monthlyOrder: +dto.monthly_order,
+    createdAt: new Date(dto.created_at),
+    updatedAt: new Date(dto.updated_at),
   };
 };
