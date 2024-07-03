@@ -21,7 +21,7 @@ const StartShiftMenu = ({ onShiftOpen }: Props) => {
       <p className="text-xl font-semibold mb-3">
         Debes comenzar un turno antes de continuar...
       </p>
-      <Button color="enterpriseOrange" size="lg" onClick={initializeShift}>
+      <Button className="w-full max-w-md" color="enterpriseOrange" size="lg" onClick={initializeShift}>
         Iniciar turno
       </Button>
     </>
