@@ -8,7 +8,6 @@ import { ShiftInformation } from "../models/shift-information";
 
 const HomePage = () => {
   const [isDataFetching, setIsDataFetching] = useState(true);
-  const [isShiftOpen, setIsShiftOpen] = useState(false);
   const [shiftInformation, setShiftInformation] = useState<
     ShiftInformation | undefined
   >(undefined);
@@ -16,16 +15,14 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { isShiftOpen, shiftInformation } = await checkShift();
+      const { shiftInformation } = await checkShift();
       setIsDataFetching(false);
 
       setShiftInformation(shiftInformation);
-
-      setIsShiftOpen(isShiftOpen);
     };
 
     fetchData();
-  }, [checkShift]);
+  }, []);
 
   const onShiftOpen = (shiftInformation?: ShiftInformation) => {
     if (!shiftInformation) {
@@ -41,7 +38,6 @@ const HomePage = () => {
       });
       return;
     }
-    setIsShiftOpen(true);
     setShiftInformation(shiftInformation);
     toast.success("Turno Iniciado", {
       position: "top-right",
@@ -60,7 +56,7 @@ const HomePage = () => {
       return <Spinner />;
     }
 
-    if (isShiftOpen) {
+    if (shiftInformation) {
       return (
         <HomeOptions shiftInformation={shiftInformation as ShiftInformation} />
       );

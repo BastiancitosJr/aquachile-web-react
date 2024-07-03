@@ -5,12 +5,10 @@ import { ShiftInformation } from "../models/shift-information";
 import { mapGetShiftDtoToShiftInformation } from "../services/home-mapper";
 
 interface CheckShiftResponse {
-  isShiftOpen: boolean;
   shiftInformation?: ShiftInformation;
 }
 
 const shiftNotOpenPayload = {
-  isShiftOpen: false,
   shiftInformation: undefined,
 };
 
@@ -26,11 +24,11 @@ const useCheckShift = () => {
     }
 
     try {
+      console.log("AAA");
       const response: GetShiftDto = await get(`shifts/${shiftId}`);
       const mappedShift = mapGetShiftDtoToShiftInformation(response);
 
       return {
-        isShiftOpen: true,
         shiftInformation: mappedShift,
       };
     } catch (err) {
