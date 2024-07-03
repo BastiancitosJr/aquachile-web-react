@@ -99,23 +99,29 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
           )}
           {!loadingAudits && (
             <div className="my-5 text-lg">
-              {auditsData.map((audit) => (
-                <div key={audit.id} className="flex items-center gap-5">
-                  <p>
-                    <span className="font-bold  ">Comentario: </span>
-                    {audit.comment}
-                  </p>
-                  <p>
-                    <span className="font-bold">Realizado el: </span>
-                    {audit.createdAt.toLocaleString("es-CL", {
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "numeric",
-                      minute: "numeric",
-                    })}
-                  </p>
-                </div>
-              ))}
+              {auditsData.length === 0 ? (
+                <p className="text-sm">
+                  No se han realizado auditorias en este turno todavía
+                </p>
+              ) : (
+                auditsData.map((audit) => (
+                  <div key={audit.id} className="flex items-center gap-5">
+                    <p>
+                      <span className="font-bold  ">Comentario: </span>
+                      {audit.comment}
+                    </p>
+                    <p>
+                      <span className="font-bold">Realizado el: </span>
+                      {audit.createdAt.toLocaleString("es-CL", {
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
+                    </p>
+                  </div>
+                ))
+              )}
             </div>
           )}
           <Divider className="my-5" />
