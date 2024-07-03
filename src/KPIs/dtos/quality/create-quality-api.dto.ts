@@ -1,5 +1,5 @@
 export interface CreateQualityAPIDto {
-  done: boolean;
+  is_done: boolean;
 
   comment: string;
 

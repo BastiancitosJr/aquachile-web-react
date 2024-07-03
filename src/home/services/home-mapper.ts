@@ -30,7 +30,7 @@ export const CreateCleaningDtoToCreateCleaningAPIDto = (
   domainDto: CreateCleaningDto
 ): CreateCleaningAPIDto => {
   return {
-    done: domainDto.isDone,
+    is_done: domainDto.isDone,
     comment: domainDto.comment,
     uuid: domainDto.shiftId,
   };
@@ -40,8 +40,7 @@ export const CreateQualityToCreateCleaningAPIDto = (
   domainDto: CreateQualityDto
 ): CreateQualityAPIDto => {
   return {
-    deviations: domainDto.deviations,
-    audits: domainDto.audits,
+    is_done: domainDto.isDone,
     comment: domainDto.comment,
     uuid: domainDto.shiftId,
   };
