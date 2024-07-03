@@ -4,10 +4,10 @@ import Divider from "../../common/components/Divider";
 import { useForm } from "react-hook-form";
 import useCreateNewCleanliness from "../hooks/cleaning/useCreateNewCleanliness";
 import { useEffect, useState } from "react";
-import useListAllAudits from "../hooks/quality/useListAllAudits";
 import useUserInformation from "../../auth/hooks/useUserInformation";
 import Spinner from "../../common/components/Spinner";
-import { ObservationResponse } from "../models/safety/observation-response";
+import useDataCleaning from "../hooks/cleaning/useDataCleaning";
+import { GetUniqueAuditResponseDto } from "../dtos/cleaning/get-unique-audit-response-dto";
 
 const formTexts = {
   title: cleaningKPI.title,
@@ -32,7 +32,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
   const [loadingObservation, setLoadingObservation] = useState(true);
   const [observationData, setObservationData] =
-    useState<ObservationResponse | null>(null);
+    useState<GetUniqueAuditResponseDto | null>(null);
 
   const {
     register,
@@ -40,22 +40,26 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
     formState: { errors },
   } = useForm<FormInputs>();
 
+  const createNewCleanliness = useCreateNewCleanliness();
+  const getCleaningAudit = useDataCleaning();
   const { shiftId } = useUserInformation();
 
-  const createNewCleanliness = useCreateNewCleanliness();
-  const getCleaningAudit = useListAllAudits();
-
   useEffect(() => {
-    console.log("Shift ID:", shiftId);
     const fetchAudit = async () => {
       setLoadingObservation(true);
       if (!show) return;
       try {
         const audit = await getCleaningAudit();
-        console.log("AUDITORIA", audit);
-        setObservationData(audit);
+        console.log("Desde el modal", audit);
+        if (audit) {
+          setObservationData({
+            ...audit,
+            created_at: new Date(audit.created_at),
+            updated_at: new Date(audit.updated_at),
+          });
+        }
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching audit in component:", err);
       } finally {
         setLoadingObservation(false);
       }
@@ -109,55 +113,32 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
                 </p>
                 <p>
                   <span className="font-bold">Realizada el: </span>
-                  {observationData.createdAt.toLocaleString("es-CL", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}
+                  {observationData.created_at.toLocaleString()}
                 </p>
               </div>
             )
           )}
-          <Divider className="my-5" />
-          <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-2 block mt-10">
-              <Label htmlFor="audit-comment" value="Comentario o Apreciación" />
-            </div>
+            <Label htmlFor="observationComment">
+              {formTexts.questionTitle}
+            </Label>
             <Textarea
+              id="observationComment"
+              {...register("observationComment", { required: true })}
               rows={4}
-              id="audit-comment"
-              placeholder="Ej: Se realizó una limpieza efectiva..."
-              color="enterprise"
-              {...register("observationComment", {
-                required: {
-                  value: true,
-                  message: "Debes ingresar un comentario",
-                },
-                minLength: {
-                  value: 5,
-                  message: "El comentario debe tener al menos 5 caracteres",
-                },
-                maxLength: {
-                  value: 200,
-                  message: "El comentario no puede tener más de 200 caracteres",
-                },
-              })}
+              className="my-2"
             />
             {errors.observationComment && (
-              <p className="text-red-500">
-                {errors.observationComment.message}
-              </p>
+              <span className="text-red-600">Este campo es requerido</span>
             )}
-            <Button
-              className="w-full mt-5"
-              type="submit"
-              color="enterprise"
-              isProcessing={sendingData}
-            >
-              {formTexts.button}
-            </Button>
+            <div className="flex justify-end gap-4 mt-4">
+              <Button type="button" onClick={handleClose} color="gray">
+                Cancelar
+              </Button>
+              <Button type="submit" color="blue" disabled={sendingData}>
+                {sendingData ? "Enviando..." : formTexts.button}
+              </Button>
+            </div>
           </form>
         </div>
       </Modal.Body>

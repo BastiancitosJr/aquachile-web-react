@@ -1,5 +1,4 @@
 import { GetallAuditResponseDto } from "../dtos/cleaning/get-all-audit-response-dto";
-import { GetUniqueAuditResponseDto } from "../dtos/cleaning/get-unique-audit-response-dto";
 import { CreateObservationAPIDto } from "../dtos/safety/create-observation-api-dto";
 import { CreateObservationDto } from "../dtos/safety/create-observation-dto";
 import { GetallObservationResponseDto } from "../dtos/safety/get-all-observation-response-dto";
@@ -16,18 +15,6 @@ export const mapGetallAuditResponseDtoToAuditResponse = (
     createdAt: new Date(dto.created_at),
     updatedAt: new Date(dto.updated_at),
   }));
-};
-
-export const mapUniqueCleaningResponseDtoToAuditResponse = (
-  dto: GetUniqueAuditResponseDto
-): ObservationResponse => {
-  return {
-    id: dto.id,
-    isDone: dto.is_done,
-    comment: dto.comment,
-    createdAt: new Date(dto.created_at),
-    updatedAt: new Date(dto.updated_at),
-  };
 };
 
 export const mapCreateObservationDtoToCreateObservationAPIDto = (

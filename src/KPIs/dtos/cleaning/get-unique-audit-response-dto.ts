@@ -5,7 +5,7 @@ export interface GetUniqueAuditResponseDto {
 
   comment: string;
 
-  created_at: string;
+  created_at: Date;
 
-  updated_at: string;
+  updated_at: Date;
 }
