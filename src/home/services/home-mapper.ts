@@ -5,6 +5,8 @@ import { CreateQualityDto } from "../../KPIs/dtos/quality/create-quality-dto";
 import { CreateShiftResponseDto } from "../dtos/create-shift-response-dto";
 import { GetShiftDto } from "../dtos/get-shift-dto";
 import { ShiftInformation } from "../models/shift-information";
+import { CreateIncidentsDto } from "../../KPIs/dtos/incidents/create-incidents-dto";
+import { CreateIncidentsAPIDto } from "../../KPIs/dtos/incidents/create-incidents-api-dto";
 
 export const mapGetShiftDtoToShiftInformation = (
   dto: GetShiftDto
@@ -30,6 +32,15 @@ export const CreateCleaningDtoToCreateCleaningAPIDto = (
 ): CreateCleaningAPIDto => {
   return {
     is_done: domainDto.isDone,
+    comment: domainDto.comment,
+    uuid: domainDto.shiftId,
+  };
+};
+
+export const CreateIncidentsDtoToCreateIncidentsAPIDto = (
+  domainDto: CreateIncidentsDto
+): CreateIncidentsAPIDto => {
+  return {
     comment: domainDto.comment,
     uuid: domainDto.shiftId,
   };
