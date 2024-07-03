@@ -1,28 +1,21 @@
 import useAxios from "../../../api/hooks/useAxios";
 import useUserInformation from "../../../auth/hooks/useUserInformation";
-
-interface AuditResponseDto {
-  id: number;
-
-  is_done: boolean;
-
-  comment: string;
-
-  created_at: Date;
-
-  updated_at: Date;
-}
+import { GetallAuditResponseDto } from "../../dtos/cleaning/get-all-audit-response-dto";
+import { AuditResponse } from "../../models/cleaning/audit-response";
+import { mapGetallAuditResponseDtoToAuditResponse } from "../../services/kpis-mapper";
 
 const useListAllAudits = () => {
   const { get } = useAxios();
   const { shiftId } = useUserInformation();
 
-  const getAll = async (): Promise<AuditResponseDto[]> => {
+  const getAll = async (): Promise<AuditResponse[]> => {
     try {
-      const allAudits: AuditResponseDto[] = await get(
+      const allAudits: GetallAuditResponseDto[] = await get(
         `labeling-qualities-shift/${shiftId}`
       );
-      return allAudits;
+      const mappedAudits = mapGetallAuditResponseDtoToAuditResponse(allAudits);
+
+      return mappedAudits;
     } catch (err) {
       return [];
     }

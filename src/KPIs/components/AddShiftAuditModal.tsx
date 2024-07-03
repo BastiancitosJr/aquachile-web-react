@@ -6,10 +6,13 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useListAllAudits from "../hooks/quality/useListAllAudits";
 import useUserInformation from "../../auth/hooks/useUserInformation";
+import Spinner from "../../common/components/Spinner";
+import { AuditResponse } from "../models/cleaning/audit-response";
 
 const formTexts = {
   title: auditKPI.title,
-  subtitle: "Agregar nueva auditoría",
+  subtitle: "Auditorias realizadas",
+  subtitleTwo: "Agregar nueva auditoría",
   button: "Agregar Auditoría",
   isAuditOk: "¿Cumple con la calidad de etiquetado?",
 };
@@ -28,6 +31,8 @@ interface Props {
 
 const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
+  const [loadingAudits, setLoadingAudits] = useState(true);
+  const [auditsData, setAuditsData] = useState<AuditResponse[]>([]);
   const {
     register,
     handleSubmit,
@@ -39,13 +44,16 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
 
   useEffect(() => {
     const fetchAudits = async () => {
+      setLoadingAudits(true);
       if (!show) return null;
 
       try {
         const audits = await listAllAudits();
-        console.log(audits);
+        setAuditsData(audits);
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoadingAudits(false);
       }
     };
 
@@ -83,8 +91,36 @@ const AddShiftAuditModal = ({ show, onModalClose }: Props) => {
             {formTexts.title}
           </h3>
           <Divider className="my-5" />
+          <h3 className="text-2xl mb-1">{formTexts.subtitle}</h3>
+          {loadingAudits && (
+            <div className="flex justify-center my-5">
+              <Spinner />
+            </div>
+          )}
+          {!loadingAudits && (
+            <div className="my-5 text-lg">
+              {auditsData.map((audit) => (
+                <div key={audit.id} className="flex items-center gap-5">
+                  <p>
+                    <span className="font-bold  ">Comentario: </span>
+                    {audit.comment}
+                  </p>
+                  <p>
+                    <span className="font-bold">Realizado el: </span>
+                    {audit.createdAt.toLocaleString("es-CL", {
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "numeric",
+                      minute: "numeric",
+                    })}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+          <Divider className="my-5" />
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h3 className="text-2xl mb-1">{formTexts.subtitle}</h3>
+            <h3 className="text-2xl mb-1">{formTexts.subtitleTwo}</h3>
             <fieldset className="w-full flex justify-between px-16 mt-5">
               <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
                 {formTexts.isAuditOk}
