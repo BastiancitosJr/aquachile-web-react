@@ -94,29 +94,38 @@ const AddMonthlyExpectedTons = ({ show, onModalClose }: Props) => {
                   <Spinner />
                 </div>
               ) : (
-                <div className="my-5 text-lg">
-                  {monthlyGoalData ? (
-                    <div className="flex items-center gap-5">
-                      <p>
-                        <span className="font-bold">Pedido Mensual: </span>
-                        {monthlyGoalData.monthlyOrder}
-                      </p>
-                      <p>
-                        <span className="font-bold">Realizada el: </span>
-                        {monthlyGoalData.createdAt.toLocaleString("es-CL", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                        })}
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="text-sm">
-                      No se han realizado auditorías en este turno todavía
+                <div className="mt-5 text-lg">
+                  <div className="flex items-center gap-5">
+                    <p>
+                      <span className="font-bold">Tonelaje: </span>
+                      {monthlyGoalData.monthlyOrder}
                     </p>
-                  )}
+                    <p>
+                      <span className="font-bold">Realizada el: </span>
+                      {monthlyGoalData.createdAt.toLocaleString("es-CL", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <p className="mt-3">
+                    <span className="font-semibold">
+                      Última actualización:{" "}
+                    </span>
+                    {monthlyGoalData.updatedAt.toLocaleString("es-CL", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                    })}
+                  </p>
+                  <Button outline color="enterprise" className="w-full mt-10">
+                    EDITAR
+                  </Button>
                 </div>
               )}
             </>
