@@ -31,7 +31,9 @@ interface Props {
 const AddShiftSafetyModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
   const [loadingObservations, setLoadingObservations] = useState(true);
-  const [observationsData, setObservationsData] = useState<ObservationResponse[]>([]);
+  const [observationsData, setObservationsData] = useState<
+    ObservationResponse[]
+  >([]);
 
   const {
     register,
@@ -59,7 +61,7 @@ const AddShiftSafetyModal = ({ show, onModalClose }: Props) => {
     };
 
     fetchObservations();
-  }, [show]);
+  }, [listAllObservations, show]);
 
   if (!show) return null;
 

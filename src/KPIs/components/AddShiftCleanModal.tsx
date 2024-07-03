@@ -3,35 +3,66 @@ import { cleaningKPI } from "../../home/constants/kpi-data";
 import Divider from "../../common/components/Divider";
 import { useForm } from "react-hook-form";
 import useCreateNewCleanliness from "../hooks/cleaning/useCreateNewCleanliness";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useListAllAudits from "../hooks/quality/useListAllAudits";
+import useUserInformation from "../../auth/hooks/useUserInformation";
+import Spinner from "../../common/components/Spinner";
+import { ObservationResponse } from "../models/safety/observation-response";
 
 const formTexts = {
   title: cleaningKPI.title,
+  subtitle: "Limpiezas realizadas",
+  subtitleTwo: "Agregar nueva limpieza",
   button: "Enviar Revisión",
-  isAuditOk: "¿El lugar de trabajo se encuentra limpio al recibirlo?",
+  questionTitle: "¿El lugar de trabajo se encuentra limpio al recibirlo?",
 };
 
 type FormInputs = {
-  auditOptions: string;
-  auditComment: string;
+  observationComment: string;
 };
 
 const formShortName = "Limpieza";
 
 interface Props {
-  shiftId: string;
   show?: boolean;
   onModalClose: (formShortName: string, isSuccess: boolean) => void;
 }
 
-const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
+const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
+  const [loadingObservations, setLoadingObservations] = useState(true);
+  const [observationsData, setObservationsData] = useState<
+    ObservationResponse[]
+  >([]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>();
+
+  const { shiftId } = useUserInformation();
+
   const createNewCleanliness = useCreateNewCleanliness();
+  const listAllAudits = useListAllAudits();
+
+  useEffect(() => {
+    const fetchAudits = async () => {
+      setLoadingObservations(true);
+      if (!show) return null;
+      try {
+        const audits = await listAllAudits();
+        setObservationsData(audits);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoadingObservations(false);
+      }
+    };
+
+    fetchAudits();
+  }, [listAllAudits, show]);
+
   if (!show) return null;
 
   const handleClose = () => {
@@ -43,8 +74,8 @@ const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
     try {
       // TODO: Unhardcode this LineID
       createNewCleanliness("1", {
-        isDone: data.auditOptions === "SI",
-        comment: data.auditComment,
+        isDone: true,
+        comment: data.observationComment,
         shiftId,
       });
       onModalClose(formShortName, true);
@@ -64,22 +95,54 @@ const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
             {formTexts.title}
           </h3>
           <Divider className="my-5" />
+          <h4 className="text-2xl mb-1">{formTexts.subtitle}</h4>
+          {loadingObservations && (
+            <div className="flex justify-center my-5">
+              <Spinner />
+            </div>
+          )}
+          {!loadingObservations && (
+            <div>
+              {observationsData.length === 0 ? (
+                <p>
+                  No se han encontrado limpiezas realizadas en el turno actual
+                </p>
+              ) : (
+                observationsData.map((observation) => (
+                  <div
+                    key={observation.id}
+                    className="grid grid-cols-2 items-start gap-5"
+                  >
+                    <p>
+                      <span className="font-bold">Limpieza: </span>
+                      {observation.comment}
+                    </p>
+                    <p>
+                      <span className="font-bold">Realizada el: </span>
+                      {observation.createdAt.toLocaleString("es-CL", {
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "numeric",
+                        minute: "numeric",
+                      })}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+          <Divider className="my-5" />
+          <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <fieldset className="w-full flex justify-between px-16 mt-5">
-              <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
-                {formTexts.isAuditOk}
-              </legend>
-            </fieldset>
-            {errors.auditOptions && (
-              <p className="text-center mt-3 text-red-500">
-                {errors.auditOptions?.message}
-              </p>
-            )}
             <div className="mb-2 block mt-10">
               <Label htmlFor="audit-comment" value="Comentario o Apreciación" />
             </div>
             <Textarea
-              {...register("auditComment", {
+              rows={4}
+              id="audit-comment"
+              placeholder="Ej: Se realizó una limpieza efectiva..."
+              color="enterprise"
+              {...register("observationComment", {
                 required: {
                   value: true,
                   message: "Debes ingresar un comentario",
@@ -93,13 +156,11 @@ const AddShiftCleanModal = ({ shiftId, show, onModalClose }: Props) => {
                   message: "El comentario no puede tener más de 200 caracteres",
                 },
               })}
-              rows={4}
-              id="audit-comment"
-              placeholder="Ej: El lugar de trabajo estaba limpio y ordenado..."
-              color={errors.auditComment?.message ? "failure" : "enterprise"}
             />
-            {errors.auditComment && (
-              <p className="text-red-500">{errors.auditComment?.message}</p>
+            {errors.observationComment && (
+              <p className="text-red-500">
+                {errors.observationComment?.message}
+              </p>
             )}
             <Button
               className="w-full mt-5"
