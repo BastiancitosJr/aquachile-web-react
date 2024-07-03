@@ -7,6 +7,7 @@ import useUserInformation from "../../auth/hooks/useUserInformation";
 import Spinner from "../../common/components/Spinner";
 import useListAllObservations from "../hooks/safety/useListAllObservations";
 import useCreateNewObservation from "../hooks/safety/useCreateNewObservation";
+import { ObservationResponse } from "../models/safety/observation-response";
 
 const formTexts = {
   title: safetyKPI.title,
@@ -30,7 +31,7 @@ interface Props {
 const AddShiftSafetyModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
   const [loadingObservations, setLoadingObservations] = useState(true);
-  const [observationsData, setObservationsData] = useState<any[]>([]);
+  const [observationsData, setObservationsData] = useState<ObservationResponse[]>([]);
 
   const {
     register,
