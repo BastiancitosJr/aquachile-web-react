@@ -11,7 +11,7 @@ import { GetUniqueAuditResponseDto } from "../dtos/cleaning/get-unique-audit-res
 
 const formTexts = {
   title: cleaningKPI.title,
-  subtitle: "Limpieza realizada",
+  subtitle: "Limpieza registrada",
   subtitleTwo: "Agregar nueva limpieza",
   button: "Enviar Revisión",
   questionTitle: "¿El lugar de trabajo se encuentra limpio al recibirlo?",
@@ -23,6 +23,7 @@ type FormInputs = {
 };
 
 const formShortName = "Limpieza";
+
 interface Props {
   show?: boolean;
   onModalClose: (formShortName: string, isSuccess: boolean) => void;
@@ -37,7 +38,6 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<FormInputs>();
 
@@ -52,13 +52,6 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
       try {
         const audit = await getCleaningAudit();
         setObservationData(audit);
-        if (audit) {
-          setValue("isClean", audit.is_done ? "SI" : "NO");
-          setValue("observationComment", audit.comment || "");
-        } else {
-          setValue("isClean", "NO");
-          setValue("observationComment", "");
-        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -99,115 +92,108 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
             {formTexts.title}
           </h3>
           <Divider className="my-5" />
-          <h4 className="text-2xl mb-1 text-center text-green-400">
-            {formTexts.subtitle}
-          </h4>
+          <h4 className="text-2xl mb-1">{formTexts.subtitle}</h4>
           {loadingObservation ? (
             <div className="flex justify-center my-5">
               <Spinner />
             </div>
-          ) : observationData ? (
-            <div className="my-5 text-lg">
-              <div className="flex items-center gap-5">
-                <p>
-                  <span className="font-bold">Comentario: </span>
-                  {observationData.comment}
-                </p>
-              </div>
-            </div>
           ) : (
-            <div>
-              <p className="text-sm">
-                No se han realizado auditorías en este turno todavía
-              </p>
-              <Divider className="my-5" />
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
-                <fieldset className="w-full flex justify-between px-16 mt-5">
-                  <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
-                    {formTexts.questionTitle}
-                  </legend>
-                  <div className="flex items-center gap-2">
-                    <Radio
-                      id="no-option"
-                      {...register("isClean", {
-                        required: {
-                          value: true,
-                          message: "Debes seleccionar una opción",
-                        },
-                      })}
-                      name="audit-options"
-                      value="NO"
-                    />
-                    <Label htmlFor="no-option" className="uppercase text-xl">
-                      NO
-                    </Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Radio
-                      id="yes-option"
-                      {...register("isClean", {
-                        required: {
-                          value: true,
-                          message: "Debes seleccionar una opción",
-                        },
-                      })}
-                      name="audit-options"
-                      value="SI"
-                    />
-                    <Label htmlFor="yes-option" className="uppercase text-xl">
-                      SI
-                    </Label>
-                  </div>
-                </fieldset>
-                {errors.observationComment && (
-                  <p className="text-center mt-3 text-red-500">
-                    {errors.observationComment?.message}
+            <div className="my-5 text-lg">
+              {observationData ? (
+                <div className="flex items-center gap-5">
+                  <p>
+                    <span className="font-bold">Comentario: </span>
+                    {observationData.comment}
                   </p>
-                )}
-                <div className="mb-2 block mt-10">
-                  <Label
-                    htmlFor="audit-comment"
-                    value="Comentario o Apreciación"
-                  />
                 </div>
-                <Textarea
-                  rows={4}
-                  id="audit-comment"
-                  placeholder="Ej: Etiquetado en excelente estado..."
-                  color="enterprise"
-                  {...register("observationComment", {
-                    required: {
-                      value: true,
-                      message: "Debes ingresar un comentario",
-                    },
-                    minLength: {
-                      value: 5,
-                      message: "El comentario debe tener al menos 5 caracteres",
-                    },
-                    maxLength: {
-                      value: 200,
-                      message:
-                        "El comentario no puede tener más de 200 caracteres",
-                    },
-                  })}
-                />
-                {errors.observationComment && (
-                  <p className="text-red-500">
-                    {errors.observationComment?.message}
-                  </p>
-                )}
-                <Button
-                  className="w-full mt-5"
-                  type="submit"
-                  color="enterprise"
-                  isProcessing={sendingData}
-                >
-                  {formTexts.button}
-                </Button>
-              </form>
+              ) : (
+                <p className="text-sm">
+                  No se han realizado auditorías en este turno todavía
+                </p>
+              )}
             </div>
           )}
+          <Divider className="my-5" />
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
+            <fieldset className="w-full flex justify-between px-16 mt-5">
+              <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
+                {formTexts.questionTitle}
+              </legend>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="no-option"
+                  {...register("isClean", {
+                    required: {
+                      value: true,
+                      message: "Debes seleccionar una opción",
+                    },
+                  })}
+                  name="audit-options"
+                  value="NO"
+                />
+                <Label htmlFor="no-option" className="uppercase text-xl">
+                  NO
+                </Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Radio
+                  id="yes-options"
+                  {...register("isClean", {
+                    required: {
+                      value: true,
+                      message: "Debes seleccionar una opción",
+                    },
+                  })}
+                  value="SI"
+                />
+                <Label htmlFor="yes-option" className="uppercase text-xl">
+                  SI
+                </Label>
+              </div>
+            </fieldset>
+            {errors.observationComment && (
+              <p className="text-center mt-3 text-red-500">
+                {errors.observationComment?.message}
+              </p>
+            )}
+            <div className="mb-2 block mt-10">
+              <Label htmlFor="audit-comment" value="Comentario o Apreciación" />
+            </div>
+            <Textarea
+              rows={4}
+              id="audit-comment"
+              placeholder="Ej: Etiquetado en excelente estado..."
+              color="enterprise"
+              {...register("observationComment", {
+                required: {
+                  value: true,
+                  message: "Debes ingresar un comentario",
+                },
+                minLength: {
+                  value: 5,
+                  message: "El comentario debe tener al menos 5 caracteres",
+                },
+                maxLength: {
+                  value: 200,
+                  message: "El comentario no puede tener más de 200 caracteres",
+                },
+              })}
+            />
+            {errors.observationComment && (
+              <p className="text-red-500">
+                {errors.observationComment?.message}
+              </p>
+            )}
+            <Button
+              className="w-full mt-5"
+              type="submit"
+              color="enterprise"
+              isProcessing={sendingData}
+            >
+              {formTexts.button}
+            </Button>
+          </form>
         </div>
       </Modal.Body>
     </Modal>
