@@ -24,7 +24,6 @@ const useCheckShift = () => {
     }
 
     try {
-      console.log("AAA");
       const response: GetShiftDto = await get(`shifts/${shiftId}`);
       const mappedShift = mapGetShiftDtoToShiftInformation(response);
 
