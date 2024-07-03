@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import useUserInformation from "../../auth/hooks/useUserInformation";
 import Spinner from "../../common/components/Spinner";
 import useDataCleaning from "../hooks/cleaning/useDataCleaning";
-import { GetUniqueAuditResponseDto } from "../dtos/cleaning/get-unique-audit-response-dto";
+import { CleaningResponse } from "../models/cleaning/cleaning-response";
 
 const formTexts = {
   title: cleaningKPI.title,
@@ -18,7 +18,7 @@ const formTexts = {
 };
 
 type FormInputs = {
-  isClean: string; // Se maneja como string para el radio button
+  isClean: string;
   observationComment: string;
 };
 
@@ -32,9 +32,12 @@ interface Props {
 const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
   const [loadingObservation, setLoadingObservation] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [observationData, setObservationData] =
-    useState<GetUniqueAuditResponseDto | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
+  const [cleaningData, setCleaningData] = useState<
+    CleaningResponse | undefined
+  >(undefined);
 
   const {
     register,
@@ -43,25 +46,20 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   } = useForm<FormInputs>();
 
   const createNewCleanliness = useCreateNewCleanliness();
-  const getCleaningAudit = useDataCleaning();
+  const getCleaningInformation = useDataCleaning();
   const { shiftId } = useUserInformation();
 
   useEffect(() => {
-    const fetchAudit = async () => {
+    const fetchCleaning = async () => {
       setLoadingObservation(true);
       if (!show) return;
-      try {
-        const audit = await getCleaningAudit();
-        setObservationData(audit);
-        setErrorMessage(null);
-      } catch (err) {
-        console.error(err);
-        setErrorMessage("Error al obtener los datos de auditoría");
-      } finally {
-        setLoadingObservation(false);
-      }
+
+      const cleaningInfo = await getCleaningInformation();
+      if (cleaningInfo) setCleaningData(cleaningInfo);
+
+      setLoadingObservation(false);
     };
-    fetchAudit();
+    fetchCleaning();
   }, [show]);
 
   if (!show) return null;
@@ -79,7 +77,7 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
         shiftId,
       });
       onModalClose(formShortName, true);
-      setErrorMessage(null);
+      setErrorMessage(undefined);
     } catch (err) {
       setErrorMessage("Ya existe un KPI de limpieza para esta linea y turno");
     } finally {
@@ -96,106 +94,129 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
             {formTexts.title}
           </h3>
           <Divider className="my-5" />
-          <h4 className="text-2xl mb-1">{formTexts.subtitle}</h4>
-          {loadingObservation ? (
-            <div className="flex justify-center my-5">
-              <Spinner />
-            </div>
-          ) : (
-            <div className="my-5 text-lg">
-              {observationData ? (
-                <div className="flex items-center gap-5">
-                  <p>
-                    <span className="font-bold">Comentario: </span>
-                    {observationData.comment}
-                  </p>
+          {cleaningData && (
+            <>
+              <h4 className="text-2xl mb-1">{formTexts.subtitle}</h4>
+              {loadingObservation ? (
+                <div className="flex justify-center my-5">
+                  <Spinner />
                 </div>
               ) : (
-                <p className="text-sm">
-                  No se han realizado auditorías en este turno todavía
-                </p>
+                <div className="my-5 text-lg">
+                  {cleaningData ? (
+                    <div className="flex items-center gap-5">
+                      <p>
+                        <span className="font-bold">Comentario: </span>
+                        {cleaningData.comment}
+                      </p>
+                      <p>
+                        <span className="font-bold">Realizada el: </span>
+                        {cleaningData.createdAt.toLocaleString("es-CL", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                        })}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-sm">
+                      No se han realizado auditorías en este turno todavía
+                    </p>
+                  )}
+                </div>
               )}
-            </div>
+            </>
           )}
-          <Divider className="my-5" />
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
-            <fieldset className="w-full flex justify-between px-16 mt-5">
-              <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
-                {formTexts.questionTitle}
-              </legend>
-              <div className="flex items-center gap-2">
-                <Radio
-                  id="no-option"
-                  {...register("isClean", {
+          {!cleaningData && (
+            <>
+              <h4 className="text-2xl mb-1">{formTexts.subtitleTwo}</h4>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <fieldset className="w-full flex justify-between px-16 mt-5">
+                  <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
+                    {formTexts.questionTitle}
+                  </legend>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="no-option"
+                      {...register("isClean", {
+                        required: {
+                          value: true,
+                          message: "Debes seleccionar una opción",
+                        },
+                      })}
+                      name="audit-options"
+                      value="NO"
+                    />
+                    <Label htmlFor="no-option" className="uppercase text-xl">
+                      NO
+                    </Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio
+                      id="yes-options"
+                      {...register("isClean", {
+                        required: {
+                          value: true,
+                          message: "Debes seleccionar una opción",
+                        },
+                      })}
+                      value="SI"
+                    />
+                    <Label htmlFor="yes-option" className="uppercase text-xl">
+                      SI
+                    </Label>
+                  </div>
+                </fieldset>
+                <div className="mb-2 block mt-10">
+                  <Label
+                    htmlFor="audit-comment"
+                    value="Comentario o Apreciación"
+                  />
+                </div>
+                <Textarea
+                  rows={4}
+                  id="audit-comment"
+                  placeholder="Ej: Etiquetado en excelente estado..."
+                  color="enterprise"
+                  {...register("observationComment", {
                     required: {
                       value: true,
-                      message: "Debes seleccionar una opción",
+                      message: "Debes ingresar un comentario",
+                    },
+                    minLength: {
+                      value: 5,
+                      message: "El comentario debe tener al menos 5 caracteres",
+                    },
+                    maxLength: {
+                      value: 200,
+                      message:
+                        "El comentario no puede tener más de 200 caracteres",
                     },
                   })}
-                  name="audit-options"
-                  value="NO"
                 />
-                <Label htmlFor="no-option" className="uppercase text-xl">
-                  NO
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Radio
-                  id="yes-options"
-                  {...register("isClean", {
-                    required: {
-                      value: true,
-                      message: "Debes seleccionar una opción",
-                    },
-                  })}
-                  value="SI"
-                />
-                <Label htmlFor="yes-option" className="uppercase text-xl">
-                  SI
-                </Label>
-              </div>
-            </fieldset>
-            <div className="mb-2 block mt-10">
-              <Label htmlFor="audit-comment" value="Comentario o Apreciación" />
-            </div>
-            <Textarea
-              rows={4}
-              id="audit-comment"
-              placeholder="Ej: Etiquetado en excelente estado..."
-              color="enterprise"
-              {...register("observationComment", {
-                required: {
-                  value: true,
-                  message: "Debes ingresar un comentario",
-                },
-                minLength: {
-                  value: 5,
-                  message: "El comentario debe tener al menos 5 caracteres",
-                },
-                maxLength: {
-                  value: 200,
-                  message: "El comentario no puede tener más de 200 caracteres",
-                },
-              })}
-            />
-            {errors.observationComment && (
-              <p className="text-red-500">
-                {errors.observationComment?.message}
-              </p>
-            )}
-            {errorMessage && (
-              <p className="text-red-500 text-center my-5">{errorMessage}</p>
-            )}
-            <Button
-              className="w-full mt-5"
-              type="submit"
-              color="enterprise"
-              isProcessing={sendingData}
-            >
-              {formTexts.button}
-            </Button>
-          </form>
+                {errors.observationComment && (
+                  <p className="text-red-500">
+                    {errors.observationComment?.message}
+                  </p>
+                )}
+                {errorMessage && (
+                  <p className="text-red-500 text-center my-5">
+                    {errorMessage}
+                  </p>
+                )}
+                <Button
+                  className="w-full mt-5"
+                  type="submit"
+                  color="enterprise"
+                  isProcessing={sendingData}
+                >
+                  {formTexts.button}
+                </Button>
+              </form>
+            </>
+          )}
         </div>
       </Modal.Body>
     </Modal>
