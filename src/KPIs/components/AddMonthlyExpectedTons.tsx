@@ -8,6 +8,7 @@ import useCreateNewMonthlyGoal from "../hooks/monthly-goal/useCreateNewMonthlyGo
 import useGetMonthlyGoal from "../hooks/monthly-goal/useGetMonthlyGoal";
 import { MonthlyGoal } from "../models/monthly-goal/monthly-goal-response";
 import Spinner from "../../common/components/Spinner";
+import useUpdateMonthlyGoal from "../hooks/monthly-goal/useUpdateMonthlyGoal";
 
 const formTexts = {
   title: monthlyGoalKPI.title,
@@ -42,6 +43,7 @@ const AddMonthlyExpectedTons = ({ show, onModalClose }: Props) => {
   const { shiftId } = useUserInformation();
   const createMonthlyGoal = useCreateNewMonthlyGoal();
   const getMonthlyGoal = useGetMonthlyGoal();
+  const updateMonthlyGoal = useUpdateMonthlyGoal();
 
   useEffect(() => {
     const fetchCleaning = async () => {
@@ -69,6 +71,21 @@ const AddMonthlyExpectedTons = ({ show, onModalClose }: Props) => {
         tons: data.monthlyGoal,
         shiftId,
       });
+      onModalClose(formShortName, true);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setSendingData(false);
+    }
+  };
+
+  const onUpdate = async (data: FormInputs) => {
+    setSendingData(true);
+    try {
+      updateMonthlyGoal(monthlyGoalData?.id || 0, {
+        monthly_order: data.monthlyGoal,
+      });
+
       onModalClose(formShortName, true);
     } catch (err) {
       console.log(err);
@@ -123,9 +140,37 @@ const AddMonthlyExpectedTons = ({ show, onModalClose }: Props) => {
                       minute: "numeric",
                     })}
                   </p>
-                  <Button outline color="enterprise" className="w-full mt-10">
-                    EDITAR
-                  </Button>
+                  <Divider className="my-5" />
+                  <form onSubmit={handleSubmit(onUpdate)}>
+                    <h4 className="text-2xl mb-5">Editar pedido mensual</h4>
+                    <TextInput
+                      id="tons-produced"
+                      {...register("monthlyGoal", {
+                        required: "Este campo es requerido",
+                        min: { value: 0, message: "El valor mínimo es 0" },
+                        max: {
+                          value: 50000,
+                          message: "El valor máximo es 1000",
+                        },
+                      })}
+                      placeholder="Ej: 250"
+                      type="number"
+                      color="enterprise"
+                    />
+                    {errors.monthlyGoal && (
+                      <p className="text-red-500">
+                        {errors.monthlyGoal?.message}
+                      </p>
+                    )}
+                    <Button
+                      outline
+                      color="enterprise"
+                      className="w-full mt-5"
+                      type="submit"
+                    >
+                      EDITAR
+                    </Button>
+                  </form>
                 </div>
               )}
             </>
