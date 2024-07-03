@@ -32,6 +32,7 @@ interface Props {
 const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
   const [sendingData, setSendingData] = useState(false);
   const [loadingObservation, setLoadingObservation] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [observationData, setObservationData] =
     useState<GetUniqueAuditResponseDto | null>(null);
 
@@ -52,8 +53,10 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
       try {
         const audit = await getCleaningAudit();
         setObservationData(audit);
+        setErrorMessage(null);
       } catch (err) {
         console.error(err);
+        setErrorMessage("Error al obtener los datos de auditoría");
       } finally {
         setLoadingObservation(false);
       }
@@ -76,8 +79,9 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
         shiftId,
       });
       onModalClose(formShortName, true);
+      setErrorMessage(null);
     } catch (err) {
-      console.error(err);
+      setErrorMessage("Ya existe un KPI de limpieza para esta linea y turno");
     } finally {
       setSendingData(false);
     }
@@ -152,11 +156,6 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
                 </Label>
               </div>
             </fieldset>
-            {errors.observationComment && (
-              <p className="text-center mt-3 text-red-500">
-                {errors.observationComment?.message}
-              </p>
-            )}
             <div className="mb-2 block mt-10">
               <Label htmlFor="audit-comment" value="Comentario o Apreciación" />
             </div>
@@ -184,6 +183,9 @@ const AddShiftCleanModal = ({ show, onModalClose }: Props) => {
               <p className="text-red-500">
                 {errors.observationComment?.message}
               </p>
+            )}
+            {errorMessage && (
+              <p className="text-red-500 text-center my-5">{errorMessage}</p>
             )}
             <Button
               className="w-full mt-5"

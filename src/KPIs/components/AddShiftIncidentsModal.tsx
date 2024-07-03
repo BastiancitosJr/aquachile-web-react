@@ -1,4 +1,4 @@
-import { Button, Label, Modal, Radio, Textarea } from "flowbite-react";
+import { Button, Label, Modal, Textarea } from "flowbite-react";
 import { incidentsKPI } from "../../home/constants/kpi-data";
 import Divider from "../../common/components/Divider";
 
@@ -36,23 +36,6 @@ const AddShiftIncidentsModal = ({ show, onModalClose }: Props) => {
               <legend className="text-center my-5 text-xl text-aqcl-500 font-semibold">
                 {formTexts.questionTitle}
               </legend>
-              <div className="flex items-center gap-2">
-                <Radio id="no-option" name="audit-options" value="NO" />
-                <Label htmlFor="no-option" className="uppercase text-xl">
-                  NO
-                </Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <Radio
-                  id="yes-options"
-                  name="audit-options"
-                  value="SI"
-                  defaultChecked
-                />
-                <Label htmlFor="yes-options" className="uppercase text-xl">
-                  SI
-                </Label>
-              </div>
             </fieldset>
             <div className="mb-2 block mt-10">
               <Label htmlFor="audit-comment" value="Comentario o Apreciación" />
